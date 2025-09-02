@@ -4,7 +4,7 @@
             <ul>
                 <li><a href="./index.php">Início</a></li>
                 <li><a href="./vagas.php">Vagas</a></li>
-                <li><a href="./sobre.php">Sobre o Projeto</a></li>
+                <li><a href="./sobre.php">Sobre</a></li>
                 <li><a href="./contato.php">Contato</a></li>
             </ul>
         </div>

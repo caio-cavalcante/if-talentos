@@ -7,11 +7,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     var options = {
         strings: codeText,
-        typeSpeed: 80, // Velocidade da digitação
-        backSpeed: 50, // Velocidade ao apagar
+        typeSpeed: 80,
+        backSpeed: 50,
         startDelay: 500,
         showCursor: true,
-        contentType: 'html', // Importante para renderizar os <span>
+        contentType: 'html',
     };
 
     var typed = new Typed('#code-snippet', options);

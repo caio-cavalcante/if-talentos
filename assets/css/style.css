@@ -10,6 +10,12 @@
     --ifba-red: #f55;
 }
 
+[data-theme="dark"] {
+    --color-background: #333;
+    --shade-background: #222;
+    --color-text: #eee;
+}
+
 body {
     background-color: var(--color-background);
     color: var(--color-text);
@@ -33,7 +39,6 @@ body {
     justify-content: space-between;
     align-items: center;
     height: 60px;
-    max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
 }
@@ -44,6 +49,14 @@ body {
     left: 20px;
     max-width: 160px;
     margin-bottom: 2rem;
+}
+
+.logo.grande {
+    display: block;
+}
+
+.logo.pequena {
+    display: none;
 }
 
 .main-nav ul {
@@ -67,11 +80,71 @@ body {
     text-decoration: underline;
 }
 
+/* https://dev.to/ananyaneogi/create-a-dark-light-mode-switch-with-css-variables-34l8 */
+.theme-switch-wrapper {
+    display: flex;
+    align-items: center;
+
+    em {
+        margin-left: 10px;
+        font-size: 1rem;
+    }
+}
+
+.theme-switch {
+    display: inline-block;
+    height: 34px;
+    position: relative;
+    width: 60px;
+}
+
+.theme-switch input {
+    display: none;
+}
+
+.slider {
+    background-color: 	#ffc100;
+    bottom: 0;
+    cursor: pointer;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transition: .4s;
+}
+
+.slider:before {
+    background-color: var(--button-text);
+    bottom: 4px;
+    content: "";
+    height: 26px;
+    left: 4px;
+    position: absolute;
+    transition: .4s;
+    width: 26px;
+}
+
+input:checked+.slider {
+    background-color: lightskyblue;
+}
+
+input:checked+.slider:before {
+    transform: translateX(26px);
+}
+
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
 .btn-login {
     background-color: var(--ifba-green);
     color: var(--button-text);
-    padding: 8px 15px;
-    border-radius: 5px;
+    padding: 8px 16px;
+    border-radius: 8px;
     text-decoration: none !important;
 }
 
@@ -79,11 +152,6 @@ body {
     background-color: var(--ifba-green-hover);
 }
 
-.landing-container {
-    /* Estilos para o container principal */
-}
-
-/* Estilos do código */
 .code-animation-container {
     background-color: var(--shade-background);
     padding: 2rem;
@@ -92,25 +160,29 @@ body {
     text-align: left;
 }
 
-.token-keyword { /* if */
+.token-keyword {
+    /* if */
     color: var(--ifba-green);
 }
 
-.token-function { /* contrate */
+.token-function {
+    /* contrate */
     color: var(--ifba-blue);
 }
 
-.token-variable { /* talentos */
+.token-variable {
+    /* talentos */
     color: var(--ifba-red);
 }
 
-.token-punctuation { /* ( ) ; { } */
+.token-punctuation {
+    /* ( ) ; { } */
     color: var(--color-text);
 }
 
 .typed-cursor {
     opacity: 1;
-    animation: blink 0.7s infinite;
+    animation: blink 0.8s infinite;
 }
 
 @keyframes blink {
@@ -124,11 +196,11 @@ body {
 }
 
 .btn {
-    padding: 10px 25px;
+    padding: 12px 24px;
     text-decoration: none;
     color: var(--button-text);
-    border-radius: 5px;
-    margin: 0 10px;
+    border-radius: 8px;
+    margin: 0 12px;
     transition: background-color 0.3s;
 }
 
@@ -158,7 +230,6 @@ body {
 
 .footer-section {
     flex: 1;
-    min-width: 250px;
 }
 
 .footer-section ul {
@@ -184,4 +255,50 @@ hr {
 .footer-bottom {
     font-size: 0.9em;
     text-align: center;
+}
+
+@media screen and (max-width: 640px) {
+    body {
+        font-size: 24px;
+    }
+
+    .logo.grande {
+        display: none;
+    }
+
+    .logo.pequena {
+        display: block;
+        margin-bottom: 1rem;
+        max-height: 64px;
+        position: static;
+    }
+
+    .main-header .container {
+        flex-direction: column;
+        align-items: center;
+        height: auto;
+        padding: 10px 10px;
+    }
+
+    .main-nav {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .main-nav ul {
+        flex-direction: row;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .btn {
+        display: inline-block;
+        margin-bottom: 10px;
+    }
+
+    .footer-section ul {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
 }
