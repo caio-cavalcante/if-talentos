@@ -1,8 +1,6 @@
 const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
 const mediaQuery = window.matchMedia('(max-width: 640px)');
 
-const logoGrandeLight = document.getElementById('grande-light');
-const logoGrandeDark = document.getElementById('grande-dark');
 const logoPequenaLight = document.getElementById('pequena-light');
 const logoPequenaDark = document.getElementById('pequena-dark');
 
@@ -11,33 +9,15 @@ function switchTheme(e) {
         document.documentElement.setAttribute('data-theme', 'dark');
         localStorage.setItem('theme', 'dark');
 
-        if (mediaQuery.matches) {
-            logoPequenaLight.style.display = 'none';
-            logoPequenaDark.style.display = 'block';
-            logoGrandeLight.style.display = 'none';
-            logoGrandeDark.style.display = 'none';
-        } else {
-            logoPequenaLight.style.display = 'none';
-            logoPequenaDark.style.display = 'none';
-            logoGrandeLight.style.display = 'none';
-            logoGrandeDark.style.display = 'block';
-        }
+        logoPequenaLight.style.display = 'none';
+        logoPequenaDark.style.display = 'block';
     }
     else {
         document.documentElement.setAttribute('data-theme', 'light');
         localStorage.setItem('theme', 'light');
 
-        if (mediaQuery.matches) {
-            logoPequenaLight.style.display = 'block';
-            logoPequenaDark.style.display = 'none';
-            logoGrandeLight.style.display = 'none';
-            logoGrandeDark.style.display = 'none';
-        } else {
-            logoPequenaLight.style.display = 'none';
-            logoPequenaDark.style.display = 'none';
-            logoGrandeLight.style.display = 'block';
-            logoGrandeDark.style.display = 'none';
-        }
+        logoPequenaLight.style.display = 'block';
+        logoPequenaDark.style.display = 'none';
     }
 }
 
@@ -51,5 +31,8 @@ if (currentTheme) {
 
     if (currentTheme === 'dark') {
         toggleSwitch.checked = true;
+    } else {
+        toggleSwitch.checked = false;
+        logoPequenaDark.style.display = 'none';
     }
 }
