@@ -19,21 +19,33 @@ if (session_status() === PHP_SESSION_NONE) {
 
     <header class="main-header">
         <div class="container">
-            <a href="https://portal.ifba.edu.br/feira-de-santana" class="logo-link">
-                <img src="assets/images/logo-pequena-colorida.png" alt="Logo do IFBA" class="logo pequena" id="pequena-light">
-                <img src="assets/images/logo-pequena-branca.png" alt="Logo do IFBA" class="logo pequena" id="pequena-dark">
+            <a href="/index.php" class="logo-link">
+                <img src="/assets/images/logo-pequena-colorida.png" alt="Logo do IFBA" class="logo pequena" id="pequena-light">
+                <img src="/assets/images/logo-pequena-branca.png" alt="Logo do IFBA" class="logo pequena" id="pequena-dark">
             </a>
             <nav class="main-nav">
                 <ul>
                     <?php if (isset($_SESSION['user_id'])) : ?>
-                        <?php if ($_SESSION['user_tipo'] == 'aluno') : ?>
+                        <?php if ($_SESSION['user_tipo'] == 1) : // TIPO ALUNO 
+                        ?>
                             <li><a href="/vagas.php">Ver Vagas</a></li>
                             <li><a href="/aluno/perfil.php">Meu Perfil</a></li>
-                        <?php elseif ($_SESSION['user_tipo'] == 'empresa') : ?>
+
+                        <?php elseif ($_SESSION['user_tipo'] == 2) : // TIPO EMPRESA 
+                        ?>
                             <li><a href="/empresa/buscar_talentos.php">Buscar Talentos</a></li>
                             <li><a href="/empresa/vagas.php">Minhas Vagas</a></li>
+
+                        <?php elseif ($_SESSION['user_tipo'] == 3) : // TIPO ADMIN 
+                        ?>
+                            <li><a href="/admin/index.php">Dashboard</a></li>
+                            <li><a href="/admin/gerenciar_vagas.php">Gerenciar Vagas</a></li>
+                            <li><a href="/admin/gerenciar_usuarios.php">Gerenciar Usuários</a></li>
+
                         <?php endif; ?>
+
                         <li><a href="/logout.php">Sair</a></li>
+
                     <?php else : ?>
                         <li><a href="/vagas.php">Vagas</a></li>
                         <li><a href="/sobre.php">Sobre</a></li>
