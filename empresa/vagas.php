@@ -1,0 +1,1 @@
+/* PRINCIPAL CRUD DO SISTEMA. Deve adicionar a vaga, com as informações necessárias e permissão para editar ou excluir. De alguma forma, permitir que alunos vejam as vagas postadas */

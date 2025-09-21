@@ -1,0 +1,1 @@
+/* vincular login de alunos com o login do suap e poder ver quais usuários estão ativos, suas informações, e se eles já aplicaram em alguma vaga */
