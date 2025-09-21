@@ -28,6 +28,8 @@ CREATE TABLE curso (
 CREATE TABLE usuario (
     id_usuario SERIAL PRIMARY KEY,
     nome VARCHAR(255) NOT NULL,
+    tel VARCHAR(20),
+    email VARCHAR(255) UNIQUE NOT NULL,
     login VARCHAR(100) UNIQUE NOT NULL,
     senha VARCHAR(255) NOT NULL,
     tipo INT NOT NULL CHECK (tipo IN (1, 2, 3)) -- 1: aluno, 2: empresa, 3: admin
@@ -37,11 +39,9 @@ CREATE TABLE usuario (
 CREATE TABLE aluno (
     id_aluno INT PRIMARY KEY REFERENCES usuario(id_usuario) ON DELETE CASCADE,
     matricula VARCHAR(20) UNIQUE NOT NULL,
-    sobrenome VARCHAR(100),
+    sobrenome VARCHAR(100) NOT NULL,
     cpf VARCHAR(14) UNIQUE NOT NULL,
-    data_nasc DATE,
-    tel VARCHAR(20),
-    email VARCHAR(255) UNIQUE NOT NULL,
+    data_nasc DATE NOT NULL,
     status VARCHAR(50),
     id_curso INT REFERENCES curso(id_curso),
     habilidades JSONB
@@ -51,9 +51,7 @@ CREATE TABLE aluno (
 CREATE TABLE empresa (
     id_empresa INT PRIMARY KEY REFERENCES usuario(id_usuario) ON DELETE CASCADE,
     nome_fant VARCHAR(255),
-    cnpj VARCHAR(18) UNIQUE NOT NULL,
-    tel VARCHAR(20),
-    email VARCHAR(255) UNIQUE NOT NULL
+    cnpj VARCHAR(18) UNIQUE NOT NULL
 );
 
 -- Tabela de Vagas
