@@ -1,17 +1,21 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Define o título da página e inclui o header
+$pageTitle = "Sobre | IF - Talentos";
+include 'includes/header.php';
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sobre o Projeto</title>
-
-    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
 <body>
-    <?php include 'includes/header.php'; ?>
-
     <main class="about-page">
         <div class="container">
 
@@ -86,8 +90,6 @@
     </main>
 
     <?php include 'includes/footer.php'; ?>
-
-    <script src="assets/js/data-theme.js"></script>
 </body>
 
 </html>
