@@ -109,55 +109,71 @@ CREATE TABLE visualizacao_perfil (
     data_visualizacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Tabela de Auditoria para Candidaturas
-CREATE TABLE auditoria_candidatura (
+-- Tabela de Auditoria para Vagas
+CREATE TABLE auditoria_vaga (
     id_auditoria SERIAL PRIMARY KEY,
-    id_candidatura_afetada INT NOT NULL,
-    status_antigo VARCHAR(50),
-    status_novo VARCHAR(50),
-    data_modificacao TIMESTAMP NOT NULL,
-    modificado_por VARCHAR(100) NOT NULL
+    id_vaga_afetada INT,
+    operacao VARCHAR(10) NOT NULL,
+    dados_antigos JSONB, -- Armazena como era o registro antes
+    dados_novos JSONB, -- Armazena como ficou o registro depois
+    modificado_por VARCHAR(100) NOT NULL,
+    data_modificacao TIMESTAMP NOT NULL
 );
 
 -- View para Relatório Gerencial
-CREATE OR REPLACE VIEW vw_relatorio_vagas AS
+CREATE OR REPLACE VIEW vw_gerenciamento_vagas AS
 SELECT
     v.id_vaga,
     v.titulo,
-    v.modalidade,
     v.status,
+    u.nome AS nome_admin, -- Traz o nome do admin que postou a vaga
+    v.data_publicacao,
+    v.data_expirar,
+    -- Subconsulta que conta o número de candidatos para cada vaga
     (SELECT COUNT(*) FROM candidatura c WHERE c.id_vaga = v.id_vaga) AS total_candidatos
-FROM vaga v
-ORDER BY total_candidatos DESC;
+FROM
+    vaga v
+JOIN
+    usuario u ON v.id_usuario_admin = u.id_usuario -- Junta com a tabela de usuários para pegar o nome
+ORDER BY
+    v.data_publicacao DESC;
 
--- Stored Procedure para Realizar Candidatura
-CREATE OR REPLACE PROCEDURE sp_realizar_candidatura(p_id_aluno INT, p_id_vaga INT)
+-- Stored Procedure para arquivar vagas expiradas
+CREATE OR REPLACE PROCEDURE sp_arquivar_vagas_expiradas(OUT vagas_arquivadas INT)
 LANGUAGE plpgsql
 AS $$
 BEGIN
-    IF NOT EXISTS (SELECT 1 FROM vaga WHERE id_vaga = p_id_vaga AND status = 'Aberta') THEN
-        RAISE EXCEPTION 'A vaga não está mais disponível.';
-    END IF;
-    IF EXISTS (SELECT 1 FROM candidatura WHERE id_aluno = p_id_aluno AND id_vaga = p_id_vaga) THEN
-        RAISE EXCEPTION 'Você já se candidatou para esta vaga.';
-    END IF;
-    INSERT INTO candidatura (id_aluno, id_vaga) VALUES (p_id_aluno, p_id_vaga);
+    WITH vagas_a_mudar AS (
+        UPDATE vaga
+        SET status = 'Expirada'
+        WHERE data_expirar < CURRENT_DATE AND status = 'Aberta'
+        RETURNING id_vaga -- Retorna os IDs das linhas afetadas
+    )
+    SELECT count(*) INTO vagas_arquivadas FROM vagas_a_mudar; -- Conta quantas linhas foram afetadas
+
 END;
 $$;
 
 -- Função da Trigger de Auditoria
-CREATE OR REPLACE FUNCTION fn_auditoria_candidatura()
+CREATE OR REPLACE FUNCTION fn_auditoria_vaga()
 RETURNS TRIGGER AS $$
 BEGIN
-    IF (TG_OP = 'UPDATE' AND OLD.status_candidatura IS DISTINCT FROM NEW.status_candidatura) THEN
-        INSERT INTO auditoria_candidatura (id_candidatura_afetada, status_antigo, status_novo, data_modificacao, modificado_por)
-        VALUES (NEW.id_candidatura, OLD.status_candidatura, NEW.status_candidatura, now(), current_user);
+    IF (TG_OP = 'INSERT') THEN
+        INSERT INTO auditoria_vaga (id_vaga_afetada, operacao, dados_novos, modificado_por, data_modificacao)
+        VALUES (NEW.id_vaga, 'INSERT', row_to_json(NEW), current_user, now());
+    ELSIF (TG_OP = 'UPDATE') THEN
+        INSERT INTO auditoria_vaga (id_vaga_afetada, operacao, dados_antigos, dados_novos, modificado_por, data_modificacao)
+        VALUES (NEW.id_vaga, 'UPDATE', row_to_json(OLD), row_to_json(NEW), current_user, now());
+    ELSIF (TG_OP = 'DELETE') THEN
+        INSERT INTO auditoria_vaga (id_vaga_afetada, operacao, dados_antigos, modificado_por, data_modificacao)
+        VALUES (OLD.id_vaga, 'DELETE', row_to_json(OLD), current_user, now());
     END IF;
-    RETURN NEW;
+    RETURN NULL; -- O resultado é ignorado para triggers AFTER
 END;
 $$ LANGUAGE plpgsql;
 
 -- Criação da Trigger
-CREATE TRIGGER trg_auditoria_status_candidatura
-AFTER UPDATE ON candidatura
-FOR EACH ROW EXECUTE FUNCTION fn_auditoria_candidatura();
+DROP TRIGGER IF EXISTS trg_auditoria_vaga ON vaga;
+CREATE TRIGGER trg_auditoria_vaga
+AFTER INSERT OR UPDATE OR DELETE ON vaga
+FOR EACH ROW EXECUTE FUNCTION fn_auditoria_vaga();
