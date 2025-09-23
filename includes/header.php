@@ -20,8 +20,7 @@ if (session_status() === PHP_SESSION_NONE) {
     <header class="main-header">
         <div class="container">
             <a href="/index.php" class="logo-link">
-                <img src="/assets/images/logo-pequena-colorida.png" alt="Logo do IFBA" class="logo pequena" id="pequena-light">
-                <img src="/assets/images/logo-pequena-branca.png" alt="Logo do IFBA" class="logo pequena" id="pequena-dark">
+                <img src="/assets/images/logo-grande.png" alt="Logo do IF - Talentos" class="logo pequena">
             </a>
             <nav class="main-nav">
                 <ul>

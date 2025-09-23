@@ -1,23 +1,13 @@
 const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
-const mediaQuery = window.matchMedia('(max-width: 640px)');
-
-const logoPequenaLight = document.getElementById('pequena-light');
-const logoPequenaDark = document.getElementById('pequena-dark');
 
 function switchTheme(e) {
     if (e.target.checked) {
         document.documentElement.setAttribute('data-theme', 'dark');
         localStorage.setItem('theme', 'dark');
-
-        logoPequenaLight.style.display = 'none';
-        logoPequenaDark.style.display = 'block';
     }
     else {
         document.documentElement.setAttribute('data-theme', 'light');
         localStorage.setItem('theme', 'light');
-
-        logoPequenaLight.style.display = 'block';
-        logoPequenaDark.style.display = 'none';
     }
 }
 
@@ -33,6 +23,5 @@ if (currentTheme) {
         toggleSwitch.checked = true;
     } else {
         toggleSwitch.checked = false;
-        logoPequenaDark.style.display = 'none';
     }
 }
