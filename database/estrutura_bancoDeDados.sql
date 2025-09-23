@@ -65,7 +65,7 @@ CREATE TABLE vaga (
     modalidade VARCHAR(50),
     status VARCHAR(50) DEFAULT 'Aberta',
     data_publicacao DATE DEFAULT CURRENT_DATE,
-    data_expirar DATE,
+    data_expirar DATE DEFAULT (CURRENT_DATE + INTERVAL '30 days'),
     CONSTRAINT fk_admin_vaga FOREIGN KEY (id_usuario_admin) REFERENCES usuario(id_usuario)
 );
 
