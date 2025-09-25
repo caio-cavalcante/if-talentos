@@ -16,9 +16,14 @@ include 'includes/header.php';
 <body>
 
     <main class="landing-container">
-        <h1 class="title">Banco de Talentos - BSI</h1>
-        <p class="tagline">Conectando talentos e empresas.</p>
-
+        <h1 class="title">
+            <span style="color: var(--ift-green);">IF</span> - Talentos
+        </h1>
+        <p class="tagline">Conectando talentos e empresas. Aqui nós vamos 
+            <strong><span style="color: var(--ift-green);">I</span>dentificar</strong> e 
+            <strong><span style="color: var(--ift-green);">F</span>ortalecer</strong> 
+            os talentos com as oportunidades certas.
+        </p>
         <div class="code-animation-container">
             <pre><code id="code-snippet"></code></pre>
         </div>
