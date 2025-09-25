@@ -67,9 +67,9 @@ if (isset($_GET['action']) && $_GET['action'] == 'edit' && isset($_GET['id'])) {
 }
 
 // 4. LÓGICA DE LEITURA (PARA EXIBIR A LISTA DE VAGAS)
-$vagas = $pdo->query("SELECT id_vaga, titulo, modalidade, data_publicacao FROM vaga ORDER BY data_publicacao DESC")->fetchAll(PDO::FETCH_ASSOC);
+$vagas = $pdo->query("SELECT * FROM vw_gerenciamento_vagas")->fetchAll(PDO::FETCH_ASSOC);
 
-$pageTitle = "Gerenciar Vagas | IF - Talentos";
+$pageTitle = "Gerenciar Vagas | Admin";
 include '../includes/header.php';
 ?>
 
@@ -118,15 +118,14 @@ include '../includes/header.php';
             <?php endif; ?>
         </form>
 
-        <hr>
-
         <h2>Vagas Atuais</h2>
         <table class="crud-table">
             <thead>
                 <tr>
                     <th>Título</th>
-                    <th>Modalidade</th>
+                    <th>Status</th>
                     <th>Publicada em</th>
+                    <th>Expira em</th>
                     <th>Ações</th>
                 </tr>
             </thead>
@@ -134,15 +133,18 @@ include '../includes/header.php';
                 <?php foreach ($vagas as $vaga): ?>
                 <tr>
                     <td><?php echo htmlspecialchars($vaga['titulo']); ?></td>
-                    <td><?php echo htmlspecialchars($vaga['modalidade']); ?></td>
+                    <td><?php echo htmlspecialchars($vaga['status']); ?></td>
                     <td><?php echo date('d/m/Y', strtotime($vaga['data_publicacao'])); ?></td>
+                    <td><?php echo date('d/m/Y', strtotime($vaga['data_expirar'])); ?></td>
                     <td class="actions">
-                        <a href="gerenciar_vagas.php?action=edit&id=<?php echo $vaga['id_vaga']; ?>" class="btn-edit">Editar</a>
+                        <div class="action-buttons">
+                            <a href="gerenciar_vagas.php?action=edit&id=<?php echo $vaga['id_vaga']; ?>" class="btn-edit">Editar</a>
                         
-                        <form action="gerenciar_vagas.php" method="POST" onsubmit="return confirm('Tem certeza?');" style="display:inline;">
-                            <input type="hidden" name="vaga_id" value="<?php echo $vaga['id_vaga']; ?>">
-                            <button type="submit" name="delete_vaga" class="btn-delete">Excluir</button>
-                        </form>
+                            <form action="gerenciar_vagas.php" method="POST" onsubmit="return confirm('Tem certeza?');" style="display:inline;">
+                                <input type="hidden" name="vaga_id" value="<?php echo $vaga['id_vaga']; ?>">
+                                <button type="submit" name="delete_vaga" class="btn-delete">Excluir</button>
+                            </form>
+                        </div>
                     </td>
                 </tr>
                 <?php endforeach; ?>

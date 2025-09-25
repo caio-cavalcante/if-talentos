@@ -1,0 +1,1 @@
+/* poderia criar uma nova página no painel do admin chamada admin/historico_vagas.php. Seria um SELECT * FROM auditoria_vaga para exibir um log completo de todas as alterações feitas nas vagas, mostrando quem fez a mudança, quando, e o que foi alterado. */
