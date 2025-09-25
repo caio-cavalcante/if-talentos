@@ -38,8 +38,8 @@ if (session_status() === PHP_SESSION_NONE) {
                         <?php elseif ($_SESSION['user_tipo'] == 3) : // TIPO ADMIN 
                         ?>
                             <li><a href="/admin/index.php">Dashboard</a></li>
-                            <li><a href="/admin/gerenciar_vagas.php">Gerenciar Vagas</a></li>
-                            <li><a href="/admin/gerenciar_usuarios.php">Gerenciar Usuários</a></li>
+                            <li><a href="/admin/gerenciar_vagas.php">Vagas</a></li>
+                            <li><a href="/admin/gerenciar_usuarios.php">Usuários</a></li>
 
                         <?php endif; ?>
 
@@ -48,7 +48,6 @@ if (session_status() === PHP_SESSION_NONE) {
                     <?php else : ?>
                         <li><a href="/vagas.php">Vagas</a></li>
                         <li><a href="/sobre.php">Sobre</a></li>
-                        <li><a href="/contato.php">Contato</a></li>
                         <li><a href="/login.php" class="btn-login">Entrar</a></li>
                     <?php endif; ?>
                     <li>
