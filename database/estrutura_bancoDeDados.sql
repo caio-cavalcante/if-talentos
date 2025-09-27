@@ -41,7 +41,7 @@ CREATE TABLE aluno (
     matricula VARCHAR(20) UNIQUE NOT NULL,
     sobrenome VARCHAR(100) NOT NULL,
     cpf VARCHAR(14) UNIQUE NOT NULL,
-    data_nasc DATE,
+    data_nasc DATE NOT NULL,
     status VARCHAR(50),
     id_curso INT REFERENCES curso(id_curso),
     habilidades JSONB
@@ -63,7 +63,6 @@ CREATE TABLE vaga (
     faixa_salarial NUMERIC(10, 2),
     pre_requi TEXT,
     modalidade VARCHAR(50),
-    link_candidatura TEXT,
     status VARCHAR(50) DEFAULT 'Aberta',
     data_publicacao DATE DEFAULT CURRENT_DATE,
     data_expirar DATE DEFAULT (CURRENT_DATE + INTERVAL '30 days'),

@@ -35,6 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $faixa_salarial = $_POST['faixa_salarial'];
     $pre_requi = trim($_POST['pre_requi']);
     $modalidade = trim($_POST['modalidade']);
+    $link_candidatura = trim($_POST['link_candidatura']);
     
     // Validação simples
     if (empty($titulo)) {
@@ -44,14 +45,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (empty($errors)) {
         if ($vaga_id) { 
             // É um UPDATE (Atualização)
-            $sql = "UPDATE vaga SET titulo = ?, descricao = ?, faixa_salarial = ?, pre_requi = ?, modalidade = ? WHERE id_vaga = ?";
+            $sql = "UPDATE vaga SET titulo = ?, descricao = ?, faixa_salarial = ?, pre_requi = ?, modalidade = ?, link_candidatura = ? WHERE id_vaga = ?";
             $stmt = $pdo->prepare($sql);
-            $stmt->execute([$titulo, $descricao, $faixa_salarial, $pre_requi, $modalidade, $vaga_id]);
+            $stmt->execute([$titulo, $descricao, $faixa_salarial, $pre_requi, $modalidade, $link_candidatura, $vaga_id]);
         } else { 
             // É um INSERT (Criação)
-            $sql = "INSERT INTO vaga (titulo, descricao, faixa_salarial, pre_requi, modalidade, id_usuario_admin) VALUES (?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO vaga (titulo, descricao, faixa_salarial, pre_requi, modalidade, id_usuario_admin, link_candidatura) VALUES (?, ?, ?, ?, ?, ?, ?)";
             $stmt = $pdo->prepare($sql);
-            $stmt->execute([$titulo, $descricao, $faixa_salarial, $pre_requi, $modalidade, $_SESSION['user_id']]);
+            $stmt->execute([$titulo, $descricao, $faixa_salarial, $pre_requi, $modalidade, $_SESSION['user_id'], $link_candidatura]);
         }
         header("Location: gerenciar_vagas.php?status=sucesso");
         exit;
@@ -110,11 +111,6 @@ include '../includes/header.php';
                         <option value="Remoto" <?php echo (($vaga_para_editar['modalidade'] ?? '') == 'Remoto') ? 'selected' : ''; ?>>Remoto</option>
                     </select>
                 </div>
-            </div>
-
-            <div class="form-group">
-                <label for="link_candidatura">Link Externo</label>
-                <input type="url" id="link_candidatura" name="link_candidatura" placeholder="https://www.linkedin.com/jobs" value="<?php echo htmlspecialchars($vaga_para_editar['link_candidatura'] ?? ''); ?>">
             </div>
 
             <button type="submit" class="btn"><?php echo $vaga_para_editar ? 'Atualizar Vaga' : 'Criar Vaga'; ?></button>
