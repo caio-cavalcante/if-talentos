@@ -112,6 +112,11 @@ include '../includes/header.php';
                 </div>
             </div>
 
+            <div class="form-group">
+                <label for="link_candidatura">Link Externo</label>
+                <input type="url" id="link_candidatura" name="link_candidatura" placeholder="https://www.linkedin.com/jobs" value="<?php echo htmlspecialchars($vaga_para_editar['link_candidatura'] ?? ''); ?>">
+            </div>
+
             <button type="submit" class="btn"><?php echo $vaga_para_editar ? 'Atualizar Vaga' : 'Criar Vaga'; ?></button>
             <?php if ($vaga_para_editar): ?>
                 <a href="gerenciar_vagas.php" class="btn btn-secondary">Cancelar Edição</a>
