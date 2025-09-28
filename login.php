@@ -3,6 +3,19 @@
 session_start();
 require 'includes/db_connect.php';
 
+if (isset($_SESSION['user_id'])) {
+    if (isset($_SESSION['user_tipo']) && $_SESSION['user_tipo'] == 2) {
+        header("Location: /empresa/index.php");
+        exit;
+    } else if (isset($_SESSION['user_tipo']) && $_SESSION['user_tipo'] == 1) {
+        header("Location: /aluno/index.php");
+        exit;
+    } else if (isset($_SESSION['user_tipo']) && $_SESSION['user_tipo'] == 3) {
+        header("Location: /index.php");
+        exit;
+    }
+}
+
 $error_message = '';
 $success_message = '';
 
