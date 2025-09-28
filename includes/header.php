@@ -43,7 +43,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
                         <?php endif; ?>
 
-                        <li><a href="/logout.php">Sair</a></li>
+                        <li><a href="/logout.php" class="btn-logout">Sair</a></li>
 
                     <?php else : ?>
                         <li><a href="/vagas.php">Vagas</a></li>
