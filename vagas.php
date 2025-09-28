@@ -2,6 +2,16 @@
 session_start();
 require 'includes/db_connect.php';
 
+$aluno_status = null;
+if (isset($_SESSION['user_id']) && $_SESSION['user_tipo'] == 1) {
+    $stmt_aluno = $pdo->prepare("SELECT status FROM aluno WHERE id_aluno = ?");
+    $stmt_aluno->execute([$_SESSION['user_id']]);
+    $aluno = $stmt_aluno->fetch(PDO::FETCH_ASSOC);
+    if ($aluno) {
+        $aluno_status = $aluno['status'];
+    }
+}
+
 try {
     // Seleciona todas as colunas da tabela vaga onde o status é 'Aberta'
     // Ordena pelas mais recentes primeiro
@@ -49,9 +59,25 @@ include 'includes/header.php';
                             <p>R$ <?php echo htmlspecialchars(number_format($vaga['faixa_salarial'], 2, ',', '.')); ?></p>
 
                             <div class="vaga-actions">
-                                <!-- Futuramente, o botão de salvar vaga virá aqui -->
-                                <!-- <button class="btn-salvar">Salvar Vaga</button> -->
-                                <a href="#" class="btn btn-candidatar">Candidatar-se</a>
+                                <?php
+                                // Verifica se é um aluno logado
+                                if (isset($_SESSION['user_id']) && $_SESSION['user_tipo'] == 1):
+                                    // Verifica se o perfil do aluno está completo (status não está vazio)
+                                    if (!empty($aluno_status)):
+                                ?>
+                                        <!-- Botão funcional -->
+                                        <a href="<?php echo htmlspecialchars($vaga['link_candidatura']); ?>" target="_blank" class="btn btn-candidatar">Me candidatar</a>
+                                    <?php
+                                    else:
+                                    ?>
+                                        <a href="/aluno/perfil.php" class="btn btn-candidatar">Completar meu perfil</a>
+                                    <?php
+                                    endif;
+                                else:
+                                    ?>
+                                    <!-- Para visitantes não logados ou outros tipos de usuário -->
+                                    <a href="../login.php" class="btn btn-candidatar">Fazer login como aluno</a>
+                                <?php endif; ?>
                             </div>
                         </div>
                     </details>
