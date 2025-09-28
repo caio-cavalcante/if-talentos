@@ -1,6 +1,7 @@
 :root {
     --color-background: #eee;
     --shade-background: #e1e1e1;
+    --border-color: #444;
     --color-text: #222;
     --button-text: #fff;
     --ift-green: #00c000;
@@ -8,8 +9,11 @@
     --ift-green-soft: #d4edda;
     --ift-blue: #007bff;
     --ift-blue-hover: #0056b3;
+    --ift-blue-soft: #87cefa;
     --ift-red: #f55;
     --ift-red-hover: #c40000;
+    --ift-yellow: #ffc107;
+    --ift-yellow-hover: #d39e00;
 }
 
 [data-theme="dark"] {
@@ -96,7 +100,7 @@ body {
 }
 
 .slider {
-    background-color: 	#ffc100;
+    background-color: var(--ift-yellow);
     bottom: 0;
     cursor: pointer;
     left: 0;
@@ -118,7 +122,7 @@ body {
 }
 
 input:checked+.slider {
-    background-color: lightskyblue;
+    background-color: var(--ift-blue-soft);
 }
 
 input:checked+.slider:before {
@@ -156,6 +160,23 @@ input:checked+.slider:before {
 .btn-login:hover {
     background-color: var(--ift-green-hover);
     cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.btn-logout {
+    background-color: var(--ift-red);
+    color: var(--color-background);
+    padding: 8px 16px;
+    border-radius: 8px;
+    text-decoration: none !important;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.btn-logout:hover {
+    background-color: var(--ift-red-hover);
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
 }
 
 .code-animation-container {
@@ -327,7 +348,7 @@ hr {
 .input-icon {
     align-items: center;
     background: var(--ift-red);
-    border-radius: 8px 0 0 8px; 
+    border-radius: 8px 0 0 8px;
     color: var(--button-text);
     display: flex;
     font-size: 24px;
@@ -421,6 +442,25 @@ hr {
     color: var(--ift-green);
 }
 
+
+/* Alinha label e input de data na mesma linha no cadastro */
+.register-form-container .form-group.date-inline {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.register-form-container .form-group.date-inline label {
+    margin-bottom: 0;
+    min-width: 120px;
+    text-align: left;
+}
+
+.register-form-container .form-group.date-inline input[type="date"] {
+    flex: 1;
+    margin-bottom: 0;
+}
+
 /* Estilos para o seletor inicial */
 #user-type-selector p {
     margin-bottom: 20px;
@@ -450,12 +490,14 @@ hr {
 }
 
 .error-message {
-    color: var(--ift-red); /* Tom de vermelho para erro */
+    color: var(--ift-red);
+    /* Tom de vermelho para erro */
     font-size: 0.85em;
     text-align: left;
     width: 100%;
     padding-left: 5px;
-    margin-bottom: 10px; /* Adiciona espaço antes do próximo campo */
+    margin-bottom: 10px;
+    /* Adiciona espaço antes do próximo campo */
     display: block;
 }
 
@@ -475,7 +517,8 @@ hr {
 }
 
 .register-form-container .form-group input {
-    border-radius: 5px; /* Bordas uniformes para o cadastro */
+    border-radius: 5px;
+    /* Bordas uniformes para o cadastro */
     text-align: center;
 }
 
@@ -533,11 +576,13 @@ hr {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    list-style: none; /* Remove a seta padrão do <summary> */
+    list-style: none;
+    /* Remove a seta padrão do <summary> */
 }
 
 .vaga-summary::-webkit-details-marker {
-    display: none; /* Remove a seta padrão no Chrome/Safari */
+    display: none;
+    /* Remove a seta padrão no Chrome/Safari */
 }
 
 .vaga-summary h3 {
@@ -577,6 +622,25 @@ hr {
 details[open] .summary-arrow {
     transform: rotate(180deg);
 }
+
+.btn-candidatar {
+    background-color: var(--ift-green);
+    color: var(--button-text);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.72em;
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 15px;
+}
+
+.btn-candidatar:hover {
+    background-color: var(--ift-green-hover);
+    transition: background-color 0.3s ease-in-out;
+}   
 
 /* Estilos específicos para a página "Sobre o Projeto" */
 .about-page .container {
@@ -630,7 +694,7 @@ details[open] .summary-arrow {
 .benefits-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 40px; 
+    gap: 40px;
 }
 
 .how-it-works-column ol,
@@ -658,7 +722,6 @@ details[open] .summary-arrow {
 }
 
 /* Estilos específicos para o Dashboard admin */
-
 .admin-dashboard .container {
     max-width: 1200px;
     margin: 40px auto;
@@ -728,7 +791,9 @@ details[open] .summary-arrow {
     border-radius: 12px;
     font-size: 0.8em;
 }
-.status-expirada, .status-fechada {
+
+.status-expirada,
+.status-fechada {
     background-color: var(--ift-red);
     color: var(--color-text);
     padding: 3px 8px;
@@ -1043,4 +1108,100 @@ label {
     text-align: center;
     color: var(--color-text);
     margin-bottom: 25px;
+}
+
+/* Estilos específicos para o Dashboard aluno */
+.dashboard-aluno {
+    max-width: 960px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.feedback-banner.warning {
+    background-color: var(--ift-yellow);
+    color: var(--border-color);
+    border: 1px solid var(--ift-yellow-hover);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+}
+
+.feedback-banner.warning a.btn {
+    background-color: var(--ift-blue);
+    color: var(--button-text);
+    padding: 8px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.feedback-banner.warning a.btn:hover {
+    background-color: var(--ift-blue-hover);
+    transition: background-color 0.3s ease-in-out;
+}
+
+.dashboard-actions {
+    margin-top: 40px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.action-card {
+    background-color: var(--shade-background);
+    padding: 25px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--color-text);
+    border: 1px solid var(--border-color);
+    transition: all 0.2s ease-in-out;
+}
+
+.action-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--ift-green);
+}
+
+.action-card h3 {
+    margin-top: 0;
+    color: var(--ift-green);
+}
+
+/* Estilos específicos para o Meu perfil - aluno */
+.profile-page .container {
+    margin: 0 auto;
+    max-width: 1200px;
+}
+
+.profile-page .container p {
+    margin: 0 auto;
+    max-width: 800px;
+}
+
+.profile-page .container .crud-form {
+    margin-top: 20px;
+}
+
+/* Estilo para campos desabilitados, para que fiquem visualmente distintos */
+.crud-form input:disabled {
+    background-color: var(--border-color);
+    cursor: not-allowed;
+    color: var(--button-text);
+}
+
+.form-group label {
+    font-size: 0.8em;
+}
+
+/* Ajuste para o banner de erro dentro do perfil */
+.profile-page .feedback-banner ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+.feedback-banner {
+    margin: 0 auto;
+    margin-top: 2%;
+    max-width: 420px;
 }
