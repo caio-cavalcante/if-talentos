@@ -318,7 +318,6 @@ hr {
 
     .btn {
         display: inline-block;
-        margin-bottom: 10px;
     }
 
     .footer-section ul {
@@ -561,7 +560,8 @@ hr {
     flex-direction: column;
     margin: 0 auto;
     gap: 15px;
-    max-width: 40%;
+    max-width: 60%;
+    min-width: 280px;
 }
 
 .vaga-card {
@@ -588,6 +588,8 @@ hr {
 .vaga-summary h3 {
     margin: 0;
     color: var(--ift-green);
+    flex: 1;
+    text-align: left;
 }
 
 .vaga-meta {
@@ -634,13 +636,65 @@ details[open] .summary-arrow {
     font-weight: bold;
     text-decoration: none;
     display: inline-block;
-    margin-top: 15px;
 }
 
 .btn-candidatar:hover {
     background-color: var(--ift-green-hover);
     transition: background-color 0.3s ease-in-out;
 }   
+
+/* Botão de salvar vaga */
+.vaga-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.btn-bookmark {
+    background-color: transparent;
+    border: 3px solid var(--color-text);
+    color: var(--color-text);
+    font-size: 0.8em;
+    padding: 6px 10px;
+    border-radius: 20%;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+.btn-bookmark:hover {
+    color: var(--ift-green-hover);
+    border-color: var(--ift-green-hover);
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-bookmark.saved {
+    background-color: var(--ift-green);
+    color: #fff;
+    border-color: var(--ift-green);
+}
+
+.btn-bookmark.saved:hover {
+    color: var(--color-text);
+    border-color: var(--border-color);
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-vagas {
+    color: var(--ift-blue);
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.btn-vagas:hover {
+    color: var(--ift-blue-hover);
+    transition: color 0.3s ease-in-out;
+}
 
 /* Estilos específicos para a página "Sobre o Projeto" */
 .about-page .container {

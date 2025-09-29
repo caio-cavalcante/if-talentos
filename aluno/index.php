@@ -40,6 +40,10 @@ include '../includes/header.php';
                 <h3>Meu Perfil</h3>
                 <p>Mantenha suas informações sempre atualizadas.</p>
             </a>
+            <a href="vagas_salvas.php" class="action-card">
+                <h3>Vagas Salvas</h3>
+                <p>Veja as vagas que você salvou.</p>
+            </a>
         </div>
     </div>
 </main>

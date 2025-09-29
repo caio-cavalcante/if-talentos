@@ -54,6 +54,13 @@ CREATE TABLE empresa (
     cnpj VARCHAR(18) UNIQUE NOT NULL
 );
 
+CREATE TABLE aluno_vagas_salvas (
+    id_aluno INT NOT NULL REFERENCES aluno(id_aluno) ON DELETE CASCADE,
+    id_vaga INT NOT NULL REFERENCES vaga(id_vaga) ON DELETE CASCADE,
+    data_salvo TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id_aluno, id_vaga) -- Chave primária composta para evitar duplicatas
+);
+
 -- Tabela de Vagas
 CREATE TABLE vaga (
     id_vaga SERIAL PRIMARY KEY,

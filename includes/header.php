@@ -11,6 +11,7 @@ if (session_status() === PHP_SESSION_NONE) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $pageTitle ?? 'Banco de Talentos BSI - IFBA'; ?></title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="shortcut icon" href="/assets/images/favicon_io/android-chrome-512x512.png" type="image/x-icon">
     <link rel="stylesheet" href="/assets/css/style.css">
 </head>
@@ -27,8 +28,9 @@ if (session_status() === PHP_SESSION_NONE) {
                     <?php if (isset($_SESSION['user_id'])) : ?>
                         <?php if ($_SESSION['user_tipo'] == 1) : // TIPO ALUNO 
                         ?>
-                            <li><a href="/vagas.php">Ver Vagas</a></li>
-                            <li><a href="/aluno/perfil.php">Meu Perfil</a></li>
+                            <li><a href="/vagas.php">Vagas</a></li>
+                            <li><a href="/aluno/vagas_salvas.php">Salvas</a></li>
+                            <li><a href="/aluno/perfil.php">Perfil</a></li>
 
                         <?php elseif ($_SESSION['user_tipo'] == 2) : // TIPO EMPRESA 
                         ?>

@@ -1,1 +1,0 @@
-/* tudo vai ser um select do banco de dados pra onde houver a key do aluno. Então, se não houver candidaturas, vai mostrar 0. E abaixo mostra os cards com vagas em aberto, puxando do CRUD de empresa/vagas.php */
