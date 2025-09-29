@@ -15,7 +15,4 @@
     </div>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
 <script src="/assets/js/data-theme.js"></script>
-<script src="/assets/js/animation.js"></script>
-<script src="/assets/js/main.js"></script>
