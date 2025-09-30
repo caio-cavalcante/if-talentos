@@ -29,4 +29,8 @@
     </div>
 </footer>
 
+</div>
+
 <script src="/assets/js/data-theme.js"></script>
+</body>
+</html>

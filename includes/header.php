@@ -21,6 +21,7 @@ if (isset($_SESSION['user_id'])) {
 </head>
 
 <body>
+    <div class="site-container">
 
     <header class="main-header">
         <div class="container">
@@ -81,4 +82,3 @@ if (isset($_SESSION['user_id'])) {
             </nav>
         </div>
     </header>
-</body>

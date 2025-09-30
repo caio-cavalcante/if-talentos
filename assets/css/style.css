@@ -22,6 +22,15 @@
     --color-text: #eee;
 }
 
+html { /* Remover scrollbar e configura altura */
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none; /* Firefox, Safari 18.2+, Chromium 121+ */
+}
+
+html::-webkit-scrollbar { 
+    display: none;  /* Older Safari and Chromium */
+}
+
 body {
     background-color: var(--color-background);
     color: var(--color-text);
@@ -33,11 +42,34 @@ body {
     text-align: center;
 }
 
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.site-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    padding-top: 80px;
+}
+
+.site-container > main {
+    flex-grow: 1;
+}
+
 .main-header {
     background-color: var(--color-background);
     border-bottom: 1px solid var(--shade-background);
     font-size: 16px;
     padding: 12px 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .main-header .container {
