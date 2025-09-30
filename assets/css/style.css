@@ -1606,6 +1606,30 @@ label {
     margin-top: 20px;
 }
 
+/* Estilo para "Meu Perfil | Empresa */
+.current-logo {
+    margin-bottom: 15px;
+    padding: 10px;
+    background-color: #1c1c1c;
+    border: 1px solid #555;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+.current-logo img {
+    max-width: 150px;
+    height: auto;
+    display: block;
+}
+
+.crud-form small {
+    color: var(--color-border);
+    display: block;
+    font-size: 0.60em;
+    margin-top: -4px;
+    margin-bottom: 8px;
+}
+
 /* Estilos para o formulário de contato */
 .contact-page .container {
     max-width: 1200px; /* Um container mais estreito é melhor para formulários */

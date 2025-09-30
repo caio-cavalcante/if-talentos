@@ -13,6 +13,55 @@ $id_empresa_logada = $_SESSION['user_id'];
 $errors = [];
 $success_message = '';
 
+// FUNÇÃO HELPER PARA REDIMENSIONAR IMAGEM
+function resizeImage($sourcePath, $destinationPath, $maxWidth, $maxHeight) {
+    list($width, $height, $type) = getimagesize($sourcePath);
+    $aspectRatio = $width / $height;
+
+    if ($width > $maxWidth || $height > $maxHeight) {
+        if ($width / $maxWidth > $height / $maxHeight) {
+            $newWidth = $maxWidth;
+            $newHeight = $maxWidth / $aspectRatio;
+        } else {
+            $newHeight = $maxHeight;
+            $newWidth = $maxHeight * $aspectRatio;
+        }
+    } else {
+        $newWidth = $width;
+        $newHeight = $height;
+    }
+
+    $thumb = imagecreatetruecolor($newWidth, $newHeight);
+    
+    switch ($type) {
+        case IMAGETYPE_JPEG:
+            $source = imagecreatefromjpeg($sourcePath);
+            break;
+        case IMAGETYPE_PNG:
+            $source = imagecreatefrompng($sourcePath);
+            imagealphablending($thumb, false);
+            imagesavealpha($thumb, true);
+            break;
+        default:
+            return false;
+    }
+
+    imagecopyresampled($thumb, $source, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+
+    switch ($type) {
+        case IMAGETYPE_JPEG:
+            imagejpeg($thumb, $destinationPath, 90);
+            break;
+        case IMAGETYPE_PNG:
+            imagepng($thumb, $destinationPath, 9);
+            break;
+    }
+    
+    imagedestroy($source);
+    imagedestroy($thumb);
+    return true;
+}
+
 // 2. LÓGICA DE ATUALIZAÇÃO DO PERFIL (QUANDO O FORMULÁRIO É ENVIADO)
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Coleta dos dados do formulário
@@ -21,6 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = trim($_POST['email']);
     $tel = trim($_POST['tel']);
     $link_perfil_externo = trim($_POST['link_perfil_externo']);
+    $logo_path = $_POST['current_logo_path'];
 
     // Tabela 'empresa'
     $nome_fantasia = trim($_POST['nome_fant']);
@@ -40,6 +90,36 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $errors[] = "Este e-mail já está em uso por outra conta.";
     }
 
+    if (isset($_FILES['logo']) && $_FILES['logo']['error'] == 0) {
+        $allowed_types = ['image/jpeg', 'image/png'];
+        $max_size = 5 * 1024 * 1024; // 5 MB
+
+        if (in_array($_FILES['logo']['type'], $allowed_types) && $_FILES['logo']['size'] <= $max_size) {
+            $upload_dir = '../uploads/logos/';
+            $file_extension = pathinfo($_FILES['logo']['name'], PATHINFO_EXTENSION);
+            $unique_filename = 'logo_' . $id_empresa_logada . '_' . time() . '.' . $file_extension;
+            $target_path = $upload_dir . $unique_filename;
+
+            if (move_uploaded_file($_FILES['logo']['tmp_name'], $target_path)) {
+                // Redimensiona a imagem
+                if (resizeImage($target_path, $target_path, 300, 300)) {
+                    // Se um logo antigo existir, deleta-o para não acumular lixo no servidor
+                    if (!empty($logo_path) && file_exists('..' . $logo_path)) {
+                        unlink('..' . $logo_path);
+                    }
+                    $logo_path = '/uploads/logos/' . $unique_filename; // Salva o caminho relativo à raiz
+                } else {
+                    $errors[] = "Erro ao redimensionar a imagem.";
+                    unlink($target_path); // Deleta o arquivo se o redimensionamento falhar
+                }
+            } else {
+                $errors[] = "Erro ao mover o arquivo para o servidor.";
+            }
+        } else {
+            $errors[] = "Arquivo inválido. Apenas imagens JPG ou PNG de até 5MB são permitidas.";
+        }
+    }
+
     if (empty($errors)) {
         $pdo->beginTransaction();
         try {
@@ -49,9 +129,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmt_usuario->execute([$nome_responsavel, $email, $tel, $link_perfil_externo, $id_empresa_logada]);
 
             // Atualiza a tabela 'empresa' e define o status como 'Pendente de Verificação'
-            $sql_empresa = "UPDATE empresa SET nome_fant = ?, descricao = ?, endereco_completo = ?, area_atuacao = ?, status = 'Pendente de Verificação' WHERE id_empresa = ?";
+            $sql_empresa = "UPDATE empresa SET nome_fant = ?, descricao = ?, endereco_completo = ?, area_atuacao = ?, status = 'Pendente de Verificação', logo_path = ? WHERE id_empresa = ?";
             $stmt_empresa = $pdo->prepare($sql_empresa);
-            $stmt_empresa->execute([$nome_fantasia, $descricao, $endereco, $area_atuacao, $id_empresa_logada]);
+            $stmt_empresa->execute([$nome_fantasia, $descricao, $endereco, $area_atuacao, $logo_path, $id_empresa_logada]);
 
             $pdo->commit();
             $success_message = "Perfil da empresa atualizado com sucesso! Agora você tem acesso a todas as funcionalidades.";
@@ -99,8 +179,19 @@ include '../includes/header.php';
             </div>
         <?php endif; ?>
 
-        <form action="perfil.php" method="POST" class="crud-form">
+        <form action="perfil.php" method="POST" class="crud-form" enctype="multipart/form-data">
             <h3>Informações da Empresa</h3>
+            <div class="form-group">
+                <label for="logo">Logo da Empresa</label>
+                <?php if (!empty($empresa['logo_path']) && file_exists('..' . $empresa['logo_path'])): ?>
+                    <div class="current-logo">
+                        <img src="<?php echo '..' . htmlspecialchars($empresa['logo_path']); ?>" alt="Logo atual da empresa">
+                    </div>
+                <?php endif; ?>
+                <input type="file" id="logo" name="logo">
+                <input type="hidden" name="current_logo_path" value="<?php echo htmlspecialchars($empresa['logo_path'] ?? ''); ?>">
+            </div>
+            <small>Envie uma imagem JPG ou PNG de até 5MB. A imagem será redimensionada para 300x300 pixels.</small>
             <div class="form-group">
                 <label for="nome_fant">Nome Fantasia*</label>
                 <input type="text" id="nome_fant" name="nome_fant" value="<?php echo htmlspecialchars($empresa['nome_fant'] ?? ''); ?>" required>
