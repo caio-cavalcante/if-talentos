@@ -23,9 +23,9 @@ $port = '5432';
 $endpoint_id = 'ep-sparkling-rice-acd11mw2-pooler';
 // getenv('DB_ENDPOINT_ID');
 
-$pass_com_endpoint = "endpoint=$endpoint_id;" . $pass;
+// $pass_com_endpoint = "endpoint=$endpoint_id;" . $pass;
 
-$dsn = "pgsql:host=$host;port=$port;dbname=$dbname";
+$dsn = "pgsql:host=$host;port=$port;dbname=$dbname;sslmode=require;";
 
 $options = [
     // Se ainda der erro de constante, o Dockerfile está falhando em carregar o PDO.
@@ -35,7 +35,7 @@ $options = [
 ];
 
 try {
-    $pdo = new PDO($dsn, $user, $pass_com_endpoint, $options);
+    $pdo = new PDO($dsn, $user, $pass, $options);
 } catch (PDOException $e) {
     // Registra o erro no log do Render
     error_log("FALHA CRÍTICA NA CONEXÃO COM O BD: " . $e->getMessage());
