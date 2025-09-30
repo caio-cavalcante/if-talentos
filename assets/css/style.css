@@ -356,15 +356,6 @@ hr {
         flex-wrap: wrap;
         gap: 10px;
     }
-
-    .how-it-works-grid,
-    .benefits-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .about-page h2 {
-        font-size: 2em;
-    }
 }
 
 /* Estilos específicos para a página "Login" */
@@ -762,7 +753,6 @@ details[open] .summary-arrow {
     margin-bottom: 15px;
 }
 
-
 .about-page p {
     line-height: 1.7;
     font-size: 1.1em;
@@ -807,6 +797,105 @@ details[open] .summary-arrow {
 .who-we-are {
     text-align: center;
     border-bottom: none;
+}
+
+@media screen and (max-width: 640px) {
+    .how-it-works-grid,
+    .benefits-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ESTILOS PARA O SLIDESHOW DA EQUIPE */
+
+.slideshow-container {
+    max-width: 320px; /* Largura do slideshow */
+    min-width: 200px;
+    position: relative;
+    margin: 40px auto 0 auto; /* Centraliza e adiciona margem no topo */
+    overflow: hidden; /* Esconde os slides que estão fora da área visível */
+    border-radius: 8px;
+    border: 2px solid var(--color-border);
+}
+
+.slideshow-wrapper {
+    display: flex;
+    transition: transform 0.5s ease-in-out; /* Efeito de transição suave */
+}
+
+.slide {
+    flex-shrink: 0;
+    width: 100%;
+    position: relative;
+}
+
+.slide img {
+    width: 100%;
+    display: block; /* Remove espaço extra embaixo da imagem */
+}
+
+.slide-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: var(--button-text);
+    text-align: center;
+    padding: 10px;
+    font-weight: bold;
+    font-size: 0.8em;
+}
+
+/* Estilo dos botões de navegação */
+.slide-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: var(--button-text);
+    border: none;
+    cursor: pointer;
+    padding: 15px;
+    font-size: 18px;
+    transition: background-color 0.2s;
+}
+
+.slide-btn:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.slide-btn.prev {
+    left: 0;
+    border-radius: 0 3px 3px 0;
+}
+
+.slide-btn.next {
+    right: 0;
+    border-radius: 3px 0 0 3px;
+}
+
+/* Estilo dos pontos de navegação */
+.slide-dots {
+    text-align: center;
+    position: absolute;
+    bottom: 35px; /* Ajuste para ficar acima da legenda */
+    width: 100%;
+}
+
+.dot {
+    cursor: pointer;
+    height: 12px;
+    width: 12px;
+    margin: 0 5px;
+    background-color: var(--shade-background);
+    border-radius: 50%;
+    display: inline-block;
+    transition: background-color 0.3s;
+}
+
+.dot.active, .dot:hover {
+    background-color: var(--ift-green); /* Cor de destaque IFBA */
 }
 
 /* Estilos específicos para o Dashboard admin */

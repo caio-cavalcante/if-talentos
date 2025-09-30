@@ -83,11 +83,88 @@ include 'includes/header.php';
             <section class="about-section who-we-are">
                 <h2>Quem Somos</h2>
                 <p>Este projeto é uma iniciativa acadêmica desenvolvida no âmbito das disciplinas de Processo de Desenvolvimento de Software, Programação Web e Banco de Dados 2, do curso de Bacharelado em Sistemas de Informação do Instituto Federal da Bahia (IFBA) - Campus Feira de Santana.</p>
-                <p><strong>Desenvolvedores:</strong> Breno Santana de Souza, Caio Cavalcante Araújo, Daniel de Souza Pereira.</p>
+
+                <div class="slideshow-container">
+                    <div class="slideshow-wrapper">
+                        <!-- Slide 1 -->
+                        <div class="slide">
+                            <img src="/assets/images/Breno.jpeg" alt="Foto de Breno Santana de Souza">
+                            <div class="slide-caption">Breno Santana de Souza</div>
+                        </div>
+                        <!-- Slide 2 -->
+                        <div class="slide">
+                            <img src="/assets/images/Caio.jpeg" alt="Foto de Caio Cavalcante Araújo">
+                            <div class="slide-caption">Caio Cavalcante Araújo</div>
+                        </div>
+                        <!-- Slide 3 -->
+                        <div class="slide">
+                            <img src="/assets/images/Daniel.jpeg" alt="Foto de Daniel de Souza Pereira">
+                            <div class="slide-caption">Daniel de Souza Pereira</div>
+                        </div>
+                    </div>
+
+                    <!-- Botões de Navegação -->
+                    <button class="slide-btn prev">&#10094;</button>
+                    <button class="slide-btn next">&#10095;</button>
+
+                    <!-- Pontos de Navegação -->
+                    <div class="slide-dots">
+                        <span class="dot active" data-slide-to="0"></span>
+                        <span class="dot" data-slide-to="1"></span>
+                        <span class="dot" data-slide-to="2"></span>
+                    </div>
+                </div>
             </section>
 
         </div>
     </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const wrapper = document.querySelector('.slideshow-wrapper');
+            const slides = document.querySelectorAll('.slide');
+            const dots = document.querySelectorAll('.dot');
+            const prevBtn = document.querySelector('.slide-btn.prev');
+            const nextBtn = document.querySelector('.slide-btn.next');
+
+            let currentIndex = 0;
+            const totalSlides = slides.length;
+
+            function showSlide(index) {
+                // Move o wrapper para a posição correta
+                wrapper.style.transform = `translateX(-${index * 100}%)`;
+
+                // Atualiza a classe 'active' nos pontos de navegação
+                dots.forEach((dot, dotIndex) => {
+                    dot.classList.toggle('active', dotIndex === index);
+                });
+
+                currentIndex = index;
+            }
+
+            // Event listeners para os botões de próximo/anterior
+            nextBtn.addEventListener('click', () => {
+                const nextIndex = (currentIndex + 1) % totalSlides;
+                showSlide(nextIndex);
+            });
+
+            prevBtn.addEventListener('click', () => {
+                const prevIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+                showSlide(prevIndex);
+            });
+
+            // Event listeners para os pontos de navegação
+            dots.forEach(dot => {
+                dot.addEventListener('click', () => {
+                    const slideIndex = parseInt(dot.getAttribute('data-slide-to'));
+                    showSlide(slideIndex);
+                });
+            });
+
+            // Inicia no primeiro slide
+            showSlide(0);
+        });
+    </script>
 
     <?php include 'includes/footer.php'; ?>
 </body>
