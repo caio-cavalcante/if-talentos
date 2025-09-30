@@ -39,6 +39,13 @@ try {
     // --- Lista de Vagas Recentes (Usando a View) ---
     $vagas_recentes = $pdo->query("SELECT * FROM vw_gerenciamento_vagas LIMIT 5")->fetchAll(PDO::FETCH_ASSOC);
 
+    // Preparar dados para a quantidade de bookmarks por vaga
+    foreach ($vagas_recentes as &$vaga) {
+        $stmt_count = $pdo->prepare("SELECT COUNT(*) FROM aluno_vagas_salvas WHERE id_vaga = ?");
+        $stmt_count->execute([$vaga['id_vaga']]);
+        $vaga['bookmarks_count'] = $stmt_count->fetchColumn();
+    }
+
 } catch (PDOException $e) {
     error_log("Erro no dashboard: " . $e->getMessage());
     die("Ocorreu um erro ao carregar os dados do dashboard.");
@@ -78,7 +85,7 @@ include '../includes/header.php';
                     <tr>
                         <th>Título da Vaga</th>
                         <th>Admin Responsável</th>
-                        <th>Candidatos</th>
+                        <th>Vezes Salva</th>
                         <th>Status</th>
                     </tr>
                 </thead>
@@ -87,7 +94,7 @@ include '../includes/header.php';
                     <tr>
                         <td><?php echo htmlspecialchars($vaga['titulo']); ?></td>
                         <td><?php echo htmlspecialchars($vaga['nome_admin']); ?></td>
-                        <td><?php echo $vaga['total_candidatos']; ?></td>
+                        <td><?php echo $vaga['bookmarks_count']; ?></td>
                         <td><span class="status-<?php echo strtolower($vaga['status']); ?>"><?php echo htmlspecialchars($vaga['status']); ?></span></td>
                     </tr>
                     <?php endforeach; ?>
