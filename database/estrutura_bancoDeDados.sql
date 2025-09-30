@@ -55,7 +55,8 @@ CREATE TABLE empresa (
     nome_fant VARCHAR(255),
     descricao TEXT NULL,
     endereco_completo TEXT NULL,
-    area_atuacao VARCHAR(255) NULL
+    area_atuacao VARCHAR(255) NULL,
+    logo_path VARCHAR(255) NULL;
 );
 
 -- Tabela de Vagas

@@ -128,8 +128,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmt_usuario = $pdo->prepare($sql_usuario);
             $stmt_usuario->execute([$nome_responsavel, $email, $tel, $link_perfil_externo, $id_empresa_logada]);
 
-            // Atualiza a tabela 'empresa' e define o status como 'Pendente de Verificação'
-            $sql_empresa = "UPDATE empresa SET nome_fant = ?, descricao = ?, endereco_completo = ?, area_atuacao = ?, status = 'Pendente de Verificação', logo_path = ? WHERE id_empresa = ?";
+            // Atualiza a tabela 'empresa' e define o status como 'Completo'
+            $sql_empresa = "UPDATE empresa SET nome_fant = ?, descricao = ?, endereco_completo = ?, area_atuacao = ?, status = 'Completo', logo_path = ? WHERE id_empresa = ?";
             $stmt_empresa = $pdo->prepare($sql_empresa);
             $stmt_empresa->execute([$nome_fantasia, $descricao, $endereco, $area_atuacao, $logo_path, $id_empresa_logada]);
 
@@ -139,8 +139,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['user_nome'] = $nome_responsavel;
         } catch (PDOException $e) {
             $pdo->rollBack();
-            $errors[] = "Ocorreu um erro ao atualizar o perfil. Tente novamente.";
             error_log($e->getMessage()); // Para depuração
+            echo($e);
+            $errors[] = "Ocorreu um erro ao atualizar o perfil. Tente novamente.";
         }
     }
 }
