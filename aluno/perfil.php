@@ -22,6 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $tel = trim($_POST['tel']);
     $matricula = trim($_POST['matricula']);
     $data_nasc = $_POST['data_nasc'];
+    $link_perfil_externo = trim($_POST['link_perfil_externo']);
     // Habilidades: Transforma string separada por vírgulas em um array e depois em JSON
     $habilidades_string = trim($_POST['habilidades']);
     $habilidades_array = array_map('trim', explode(',', $habilidades_string));
@@ -54,9 +55,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmt_usuario->execute([$nome, $email, $tel, $id_aluno_logado]);
 
             // Atualiza a tabela 'aluno' e define o status como 'Regular'
-            $sql_aluno = "UPDATE aluno SET sobrenome = ?, matricula = ?, data_nasc = ?, habilidades = ?, status = 'Regular' WHERE id_aluno = ?";
+            $sql_aluno = "UPDATE aluno SET sobrenome = ?, link_perfil_externo = ?, matricula = ?, data_nasc = ?, habilidades = ?, status = 'Regular' WHERE id_aluno = ?";
             $stmt_aluno = $pdo->prepare($sql_aluno);
-            $stmt_aluno->execute([$sobrenome, $matricula, $data_nasc, $habilidades_json, $id_aluno_logado]);
+            $stmt_aluno->execute([$sobrenome, $link_perfil_externo, $matricula, $data_nasc, $habilidades_json, $id_aluno_logado]);
 
             $pdo->commit();
             $success_message = "Perfil atualizado com sucesso!";
@@ -139,6 +140,10 @@ include '../includes/header.php';
             <div class="form-group">
                 <label for="email">Email*</label>
                 <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($aluno['email'] ?? ''); ?>" required>
+            </div>
+            <div class="form-group">
+                <label for="link_perfil_externo">Seu site</label>
+                <input type="url" id="link_perfil_externo" name="link_perfil_externo" placeholder="https://seusite.com" value="<?php echo htmlspecialchars($aluno['link_perfil_externo'] ?? ''); ?>">
             </div>
             <div class="form-group">
                 <label for="tel">Telefone</label>
