@@ -140,7 +140,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         } catch (PDOException $e) {
             $pdo->rollBack();
             $errors[] = "Ocorreu um erro ao atualizar o perfil. Tente novamente.";
-            // error_log($e->getMessage()); // Para depuração
+            error_log($e->getMessage()); // Para depuração
         }
     }
 }

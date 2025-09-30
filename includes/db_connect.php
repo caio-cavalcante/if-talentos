@@ -1,27 +1,38 @@
 <?php
-// Configurações do Banco de Dados Local (Desenvolvimento)
-$host = 'aws-1-sa-east-1.pooler.supabase.com';        
-$port = '6543';             
-$dbname = 'postgres'; 
-$user = 'postgres.vhgzwtiwoycnbfbesvoc';         
-$password = 'ifbaedubr20231';
 
-// DSN (Data Source Name) para a conexão com PostgreSQL
+$host = getenv('DB_HOST');
+if (empty($host)) { $host = 'seu_host_local'; }
+
+$dbname = getenv('DB_NAME');
+if (empty($dbname)) { $dbname = 'seu_db_local'; }
+
+$user = getenv('DB_USER');
+if (empty($user)) { $user = 'seu_user_local'; }
+
+$pass = getenv('DB_PASSWORD');
+if (empty($pass)) { $pass = 'sua_senha_local'; }
+
+$port = getenv('DB_PORT');
+if (empty($port)) { $port = '5432'; }
+
+$endpoint_id = getenv('DB_ENDPOINT_ID');
+
 $dsn = "pgsql:host=$host;port=$port;dbname=$dbname";
 
-// Opções do PDO para otimização e segurança
 $options = [
+    // Se ainda der erro de constante, o Dockerfile está falhando em carregar o PDO.
     PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-    PDO::ATTR_EMULATE_PREPARES   => false,
+    PDO::ATTR_EMULATE_PREPARES   => false, 
 ];
 
 try {
-    // Tenta criar uma nova instância do PDO para estabelecer a conexão
-    $pdo = new PDO($dsn, $user, $password, $options);
+    $pdo = new PDO($dsn, $user, $pass, $options); 
 } catch (PDOException $e) {
-    // Em caso de falha, encerra o script e exibe uma mensagem de erro genérica.
-    error_log("Erro de conexão com o banco de dados: " . $e->getMessage());
-    die("Erro: Não foi possível conectar ao banco de dados. Por favor, tente novamente mais tarde.");
+    // Registra o erro no log do Render
+    error_log("FALHA CRÍTICA NA CONEXÃO COM O BD: " . $e->getMessage());
+    // Mostra a mensagem amigável ao usuário
+    http_response_code(503);
+    die("Serviço indisponível temporariamente. Tente novamente mais tarde.");
 }
 ?>

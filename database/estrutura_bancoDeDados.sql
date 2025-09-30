@@ -58,13 +58,6 @@ CREATE TABLE empresa (
     area_atuacao VARCHAR(255) NULL
 );
 
-CREATE TABLE aluno_vagas_salvas (
-    id_aluno INT NOT NULL REFERENCES aluno(id_aluno) ON DELETE CASCADE,
-    id_vaga INT NOT NULL REFERENCES vaga(id_vaga) ON DELETE CASCADE,
-    data_salvo TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (id_aluno, id_vaga) -- Chave primária composta para evitar duplicatas
-);
-
 -- Tabela de Vagas
 CREATE TABLE vaga (
     id_vaga SERIAL PRIMARY KEY,
@@ -82,6 +75,14 @@ CREATE TABLE vaga (
     CONSTRAINT fk_criador_vaga FOREIGN KEY (id_usuario_criador) REFERENCES usuario(id_usuario),
     CONSTRAINT fk_aprovador_vaga FOREIGN KEY (id_usuario_aprovador) REFERENCES usuario(id_usuario)
 );
+
+CREATE TABLE aluno_vagas_salvas (
+    id_aluno INT NOT NULL REFERENCES aluno(id_aluno) ON DELETE CASCADE,
+    id_vaga INT NOT NULL REFERENCES vaga(id_vaga) ON DELETE CASCADE,
+    data_salvo TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id_aluno, id_vaga) -- Chave primária composta para evitar duplicatas
+);
+
 
 -- Tabela de Candidaturas
 CREATE TABLE candidatura (
@@ -140,7 +141,7 @@ SELECT
     v.id_vaga,
     v.titulo,
     v.status,
-    u.nome AS nome_admin, -- Traz o nome do admin que postou a vaga
+    u.nome AS nome_criador, -- Traz o nome do criador que postou a vaga
     v.data_publicacao,
     v.data_expirar,
     -- Subconsulta que conta o número de candidatos para cada vaga
@@ -148,7 +149,7 @@ SELECT
 FROM
     vaga v
 JOIN
-    usuario u ON v.id_usuario_admin = u.id_usuario -- Junta com a tabela de usuários para pegar o nome
+    usuario u ON v.id_usuario_criador = u.id_usuario -- Junta com a tabela de usuários para pegar o nome
 ORDER BY
     v.data_publicacao DESC;
 
