@@ -95,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         } catch (PDOException $e) {
             $pdo->rollBack();
             $errors['geral'] = "Erro ao realizar o cadastro. Por favor, tente novamente.";
-            // Para depuração: error_log($e->getMessage());
+            error_log($e->getMessage());
         }
     }
 }
