@@ -1,10 +1,10 @@
 <?php
 // Configurações do Banco de Dados Local (Desenvolvimento)
-$host = 'localhost';        
-$port = '5432';             
-$dbname = 'banco_talentos'; 
-$user = 'postgres';         
-$password = 'postgres';
+$host = 'aws-1-sa-east-1.pooler.supabase.com';        
+$port = '6543';             
+$dbname = 'postgres'; 
+$user = 'postgres.vhgzwtiwoycnbfbesvoc';         
+$password = 'ifbaedubr20231';
 
 // DSN (Data Source Name) para a conexão com PostgreSQL
 $dsn = "pgsql:host=$host;port=$port;dbname=$dbname";
