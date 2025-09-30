@@ -1,21 +1,29 @@
 <?php
 
-$host = getenv('DB_HOST');
-if (empty($host)) { $host = 'seu_host_local'; }
+$host = 'ep-sparkling-rice-acd11mw2-pooler.sa-east-1.aws.neon.tech';
+// getenv('DB_HOST');
+// if (empty($host)) { $host = 'seu_host_local'; }
 
-$dbname = getenv('DB_NAME');
-if (empty($dbname)) { $dbname = 'seu_db_local'; }
+$dbname = 'neondb';
+// getenv('DB_NAME');
+// if (empty($dbname)) { $dbname = 'seu_db_local'; }
 
-$user = getenv('DB_USER');
-if (empty($user)) { $user = 'seu_user_local'; }
+$user = 'neondb_owner';
+// getenv('DB_USER');
+// if (empty($user)) { $user = 'seu_user_local'; }
 
-$pass = getenv('DB_PASSWORD');
-if (empty($pass)) { $pass = 'sua_senha_local'; }
+$pass = 'npg_QAFNbn3OuL8p';
+// getenv('DB_PASSWORD');
+// if (empty($pass)) { $pass = 'sua_senha_local'; }
 
-$port = getenv('DB_PORT');
-if (empty($port)) { $port = '5432'; }
+$port = '5432';
+// getenv('DB_PORT');
+// if (empty($port)) { $port = '5432'; }
 
-$endpoint_id = getenv('DB_ENDPOINT_ID');
+$endpoint_id = 'ep-sparkling-rice-acd11mw2-pooler';
+// getenv('DB_ENDPOINT_ID');
+
+$pass_com_endpoint = "endpoint=$endpoint_id;" . $pass;
 
 $dsn = "pgsql:host=$host;port=$port;dbname=$dbname";
 
@@ -27,7 +35,7 @@ $options = [
 ];
 
 try {
-    $pdo = new PDO($dsn, $user, $pass, $options); 
+    $pdo = new PDO($dsn, $user, $pass_com_endpoint, $options);
 } catch (PDOException $e) {
     // Registra o erro no log do Render
     error_log("FALHA CRÍTICA NA CONEXÃO COM O BD: " . $e->getMessage());

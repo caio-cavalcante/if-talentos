@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmt->execute([$titulo, $descricao, $faixa_salarial, $pre_requi, $modalidade, $link_candidatura, $vaga_id]);
         } else { 
             // É um INSERT (Criação)
-            $sql = "INSERT INTO vaga (titulo, descricao, faixa_salarial, pre_requi, modalidade, id_usuario_admin, link_candidatura) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO vaga (titulo, descricao, faixa_salarial, pre_requi, modalidade, id_usuario_criador, link_candidatura) VALUES (?, ?, ?, ?, ?, ?, ?)";
             $stmt = $pdo->prepare($sql);
             $stmt->execute([$titulo, $descricao, $faixa_salarial, $pre_requi, $modalidade, $_SESSION['user_id'], $link_candidatura]);
         }
