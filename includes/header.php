@@ -2,6 +2,10 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+
+if (isset($_SESSION['user_id'])) {
+    $user_tipo = $_SESSION['user_tipo'];
+}
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -20,7 +24,19 @@ if (session_status() === PHP_SESSION_NONE) {
 
     <header class="main-header">
         <div class="container">
-            <a href="/index.php" class="logo-link">
+            <a href="<?php
+                        if (isset($_SESSION['user_id'])) {
+                            if ($_SESSION['user_tipo'] == 1) {
+                                echo '/aluno/index.php';
+                            } elseif ($_SESSION['user_tipo'] == 2) {
+                                echo '/empresa/index.php';
+                            } elseif ($_SESSION['user_tipo'] == 3) {
+                                echo '/admin/index.php';
+                            }
+                        } else {
+                            echo '/index.php';
+                        }
+                        ?>" class="logo-link">
                 <img src="/assets/images/logo-grande.png" alt="Logo do IF - Talentos" class="logo pequena">
             </a>
             <nav class="main-nav">
@@ -34,8 +50,9 @@ if (session_status() === PHP_SESSION_NONE) {
 
                         <?php elseif ($_SESSION['user_tipo'] == 2) : // TIPO EMPRESA 
                         ?>
-                            <li><a href="/empresa/buscar_talentos.php">Buscar Talentos</a></li>
+                            <li><a href="/empresa/buscar_talentos.php">Talentos</a></li>
                             <li><a href="/empresa/vagas.php">Minhas Vagas</a></li>
+                            <li><a href="/empresa/perfil.php">Perfil</a></li>
 
                         <?php elseif ($_SESSION['user_tipo'] == 3) : // TIPO ADMIN 
                         ?>
