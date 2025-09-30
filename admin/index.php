@@ -103,7 +103,7 @@ include '../includes/header.php';
                     <?php foreach ($vagas_recentes as $vaga): ?>
                     <tr>
                         <td><?php echo htmlspecialchars($vaga['titulo']); ?></td>
-                        <td><?php echo htmlspecialchars($vaga['nome_admin']); ?></td>
+                        <td><?php echo htmlspecialchars($vaga['nome_criador']); ?></td>
                         <td><?php echo $vaga['bookmarks_count']; ?></td>
                         <td><span class="status-<?php echo strtolower($vaga['status']); ?>"><?php echo htmlspecialchars($vaga['status']); ?></span></td>
                     </tr>
