@@ -35,7 +35,7 @@ include 'includes/header.php';
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
-    <script src="/assets/js/animation.js"></script>
+    <script src="/assets/js/animation-typing.js"></script>
     <?php include 'includes/footer.php'; ?>
 </body>
 </html>
