@@ -14,7 +14,7 @@ try {
     // --- KPIs: Contagens Totais ---
     $total_alunos = $pdo->query("SELECT COUNT(*) FROM aluno")->fetchColumn();
     $total_empresas = $pdo->query("SELECT COUNT(*) FROM empresa")->fetchColumn();
-    $total_vagas_abertas = $pdo->query("SELECT COUNT(*) FROM vaga WHERE status = 'Aberta'")->fetchColumn();
+    $total_vagas_abertas = $pdo->query("SELECT COUNT(*) FROM vaga WHERE status = 'Aprovada' OR status = 'Aberta'")->fetchColumn();
 
     // --- Análise de Habilidades dos Alunos (Usando funções JSON do PostgreSQL) ---
     $sql_habilidades = "
@@ -51,6 +51,9 @@ try {
     die("Ocorreu um erro ao carregar os dados do dashboard.");
 }
 
+// Verifica se há vagas pendentes de aprovação dos admins
+$stmt_pendentes = $pdo->query("SELECT COUNT(*) FROM vaga WHERE status = 'Pendente'");
+$vagas_pendentes = $stmt_pendentes->fetchColumn();
 
 $pageTitle = "Dashboard | Admin";
 include '../includes/header.php';
@@ -60,6 +63,13 @@ include '../includes/header.php';
     <div class="container">
         <h1>Dashboard Administrativo</h1>
         <p>Bem-vindo, <?php echo htmlspecialchars($_SESSION['user_nome']); ?>!</p>
+
+        <?php if ($vagas_pendentes > 0): ?>
+            <div class="feedback-banner warning">
+                <strong>Há <?php echo $vagas_pendentes; ?> vagas pendentes de aprovação.</strong>
+                <a href="aprovar_vagas.php" class="btn">Ver Vagas Pendentes</a>
+            </div>
+        <?php endif; ?><br>
 
         <!-- Seção de KPIs -->
         <section class="dashboard-kpis">
@@ -84,7 +94,7 @@ include '../includes/header.php';
                 <thead>
                     <tr>
                         <th>Título da Vaga</th>
-                        <th>Admin Responsável</th>
+                        <th>Usuário Responsável</th>
                         <th>Vezes Salva</th>
                         <th>Status</th>
                     </tr>

@@ -1,7 +1,7 @@
 :root {
     --color-background: #eee;
     --shade-background: #e1e1e1;
-    --border-color: #444;
+    --color-border: #444;
     --color-text: #222;
     --button-text: #fff;
     --ift-green: #00c000;
@@ -625,7 +625,8 @@ details[open] .summary-arrow {
     transform: rotate(180deg);
 }
 
-.btn-candidatar {
+.btn-candidatar,
+.btn-link {
     background-color: var(--ift-green);
     color: var(--button-text);
     padding: 10px 20px;
@@ -638,10 +639,11 @@ details[open] .summary-arrow {
     display: inline-block;
 }
 
-.btn-candidatar:hover {
+.btn-candidatar:hover,
+.btn-link:hover {
     background-color: var(--ift-green-hover);
     transition: background-color 0.3s ease-in-out;
-}   
+}
 
 /* Botão de salvar vaga */
 .vaga-actions {
@@ -679,7 +681,7 @@ details[open] .summary-arrow {
 
 .btn-bookmark.saved:hover {
     color: var(--color-text);
-    border-color: var(--border-color);
+    border-color: var(--color-border);
     transition: all 0.3s ease-in-out;
 }
 
@@ -838,8 +840,17 @@ details[open] .summary-arrow {
     margin-top: 15px;
 }
 
-.status-aberta {
+.status-aberta,
+.status-aprovada {
     background-color: var(--ift-green);
+    color: var(--color-text);
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 0.8em;
+}
+
+.status-pendente {
+    background-color: var(--ift-yellow);
     color: var(--color-text);
     padding: 3px 8px;
     border-radius: 12px;
@@ -882,6 +893,7 @@ details[open] .summary-arrow {
     border-radius: 8px;
     border: 1px solid var(--color-text);
     width: 60%;
+    min-width: 320px;
     margin: 0 auto;
 }
 
@@ -1164,6 +1176,109 @@ label {
     margin-bottom: 25px;
 }
 
+/* ESTILOS PARA STATUS E PÁGINA DE APROVAÇÃO */
+.status-tag {
+    padding: 4px 10px;
+    border-radius: 15px;
+    font-size: 0.8em;
+    font-weight: bold;
+    color: #fff;
+    text-transform: uppercase;
+}
+
+.status-tag.status-pendente {
+    background-color: #ffc107;
+    color: #333;
+}
+
+.status-tag.status-aprovada {
+    background-color: #28a745;
+}
+
+.status-tag.status-rejeitada {
+    background-color: #dc3545;
+}
+
+.status-tag.status-expirada {
+    background-color: #6c757d;
+}
+
+/* Página de Aprovação */
+.approval-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.approval-card {
+    background-color: var(--shade-background);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+}
+
+.approval-card .card-header {
+    padding: 15px;
+    border-bottom: 1px solid var(--color-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.approval-card .card-header h3 {
+    margin: 0;
+}
+
+.approval-card .card-body {
+    padding: 15px;
+}
+
+.approval-card .card-body p {
+    margin-top: 0;
+}
+
+.approval-card .card-actions {
+    padding: 15px;
+    background-color: var(--shade-background);
+    border-top: 1px solid var(--color-border);
+    text-align: right;
+}
+
+.approval-card .btn-success {
+    background-color: var(--ift-green);
+    color: var(--button-text);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.72em;
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.approval-card .btn-success:hover {
+    background-color: var(--ift-green-hover);
+    transition: background-color 0.3s ease-in-out;
+}
+
+.approval-card .btn-danger {
+    background-color: var(--ift-red);
+    color: var(--button-text);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.72em;
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.approval-card .btn-danger:hover {
+    background-color: var(--ift-red-hover);
+    transition: background-color 0.3s ease-in-out;
+}
+
 /* Estilos específicos para o Dashboard aluno */
 .dashboard-aluno {
     max-width: 960px;
@@ -1173,12 +1288,13 @@ label {
 
 .feedback-banner.warning {
     background-color: var(--ift-yellow);
-    color: var(--border-color);
+    color: var(--color-border);
     border: 1px solid var(--ift-yellow-hover);
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 15px;
+    max-width: 960px;
 }
 
 .feedback-banner.warning a.btn {
@@ -1207,7 +1323,7 @@ label {
     border-radius: 8px;
     text-decoration: none;
     color: var(--color-text);
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--color-border);
     transition: all 0.2s ease-in-out;
 }
 
@@ -1238,7 +1354,7 @@ label {
 
 /* Estilo para campos desabilitados, para que fiquem visualmente distintos */
 .crud-form input:disabled {
-    background-color: var(--border-color);
+    background-color: var(--color-border);
     cursor: not-allowed;
     color: var(--button-text);
 }
@@ -1258,4 +1374,106 @@ label {
     margin: 0 auto;
     margin-top: 2%;
     max-width: 420px;
+}
+
+/* Estilos específicos para empresas */
+.dashboard-empresa {
+    max-width: 960px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.action-card.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: #222;
+}
+
+.action-card.disabled:hover {
+    transform: none;
+    /* Remove o efeito de hover */
+    border-color: #444;
+    /* Mantém a borda padrão */
+}
+
+/* Estilos específicos para a página "Buscar Talentos" */
+.talentos-page .container {
+    margin: 0 auto;
+    max-width: 60%;
+    min-width: 280px;
+}
+
+.talentos-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.aluno-card {
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    background-color: var(--shade-background);
+}
+
+.aluno-summary {
+    padding: 15px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    list-style: none;
+}
+
+.aluno-summary::-webkit-details-marker {
+    display: none;
+}
+
+.aluno-summary h3 {
+    margin: 0;
+    color: var(--ift-green);
+}
+
+.aluno-meta {
+    font-size: 0.9em;
+    color: var(--color-text);
+    margin-left: 15px;
+    padding: 3px 8px;
+}
+
+.aluno-details {
+    padding: 0 15px 15px 15px;
+    border-top: 1px solid var(--color-border);
+}
+
+.aluno-details h4 {
+    margin-top: 15px;
+    margin-bottom: 10px;
+    color: var(--color-text);
+}
+
+.aluno-details p {
+    color: var(--color-text);
+    line-height: 1.6;
+}
+
+/* Estilo para as tags de habilidades */
+.skills-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+}
+
+.skill-tag {
+    background-color: var(--ift-green);
+    color: var(--button-text);
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.85em;
+    font-weight: bold;
+}
+
+.aluno-actions {
+    margin-top: 20px;
 }
