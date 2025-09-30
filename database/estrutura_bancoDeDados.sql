@@ -29,6 +29,7 @@ CREATE TABLE usuario (
     id_usuario SERIAL PRIMARY KEY,
     nome VARCHAR(255) NOT NULL,
     tel VARCHAR(20),
+    link_perfil_externo TEXT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
     senha VARCHAR(255) NOT NULL,
     tipo INT NOT NULL CHECK (tipo IN (1, 2, 3)) -- 1: aluno, 2: empresa, 3: admin
@@ -49,8 +50,12 @@ CREATE TABLE aluno (
 -- Tabela de Empresas (Especialização)
 CREATE TABLE empresa (
     id_empresa INT PRIMARY KEY REFERENCES usuario(id_usuario) ON DELETE CASCADE,
+    cnpj VARCHAR(18) UNIQUE NOT NULL,
+    status VARCHAR(50) NOT NULL DEFAULT 'Incompleto',
     nome_fant VARCHAR(255),
-    cnpj VARCHAR(18) UNIQUE NOT NULL
+    descricao TEXT NULL,
+    endereco_completo TEXT NULL,
+    area_atuacao VARCHAR(255) NULL
 );
 
 CREATE TABLE aluno_vagas_salvas (
@@ -63,7 +68,8 @@ CREATE TABLE aluno_vagas_salvas (
 -- Tabela de Vagas
 CREATE TABLE vaga (
     id_vaga SERIAL PRIMARY KEY,
-    id_usuario_admin INT NOT NULL,
+    id_usuario_criador INT NOT NULL,
+    id_usuario_aprovador INT NULL,
     titulo VARCHAR(255) NOT NULL,
     descricao TEXT,
     faixa_salarial NUMERIC(10, 2),
@@ -73,7 +79,8 @@ CREATE TABLE vaga (
     status VARCHAR(50) DEFAULT 'Aberta',
     data_publicacao DATE DEFAULT CURRENT_DATE,
     data_expirar DATE DEFAULT (CURRENT_DATE + INTERVAL '30 days'),
-    CONSTRAINT fk_admin_vaga FOREIGN KEY (id_usuario_admin) REFERENCES usuario(id_usuario)
+    CONSTRAINT fk_criador_vaga FOREIGN KEY (id_usuario_criador) REFERENCES usuario(id_usuario),
+    CONSTRAINT fk_aprovador_vaga FOREIGN KEY (id_usuario_aprovador) REFERENCES usuario(id_usuario)
 );
 
 -- Tabela de Candidaturas
