@@ -50,14 +50,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $pdo->beginTransaction();
         try {
             // Atualiza a tabela 'usuario'
-            $sql_usuario = "UPDATE usuario SET nome = ?, email = ?, tel = ? WHERE id_usuario = ?";
+            $sql_usuario = "UPDATE usuario SET nome = ?, email = ?, tel = ?, link_perfil_externo = ? WHERE id_usuario = ?";
             $stmt_usuario = $pdo->prepare($sql_usuario);
-            $stmt_usuario->execute([$nome, $email, $tel, $id_aluno_logado]);
+            $stmt_usuario->execute([$nome, $email, $tel, $link_perfil_externo, $id_aluno_logado]);
 
             // Atualiza a tabela 'aluno' e define o status como 'Regular'
-            $sql_aluno = "UPDATE aluno SET sobrenome = ?, link_perfil_externo = ?, matricula = ?, data_nasc = ?, habilidades = ?, status = 'Regular' WHERE id_aluno = ?";
+            $sql_aluno = "UPDATE aluno SET sobrenome = ?, matricula = ?, data_nasc = ?, habilidades = ?, status = 'Regular' WHERE id_aluno = ?";
             $stmt_aluno = $pdo->prepare($sql_aluno);
-            $stmt_aluno->execute([$sobrenome, $link_perfil_externo, $matricula, $data_nasc, $habilidades_json, $id_aluno_logado]);
+            $stmt_aluno->execute([$sobrenome, $matricula, $data_nasc, $habilidades_json, $id_aluno_logado]);
 
             $pdo->commit();
             $success_message = "Perfil atualizado com sucesso!";
@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 // 3. BUSCAR DADOS ATUAIS DO ALUNO PARA PREENCHER O FORMULÁRIO
-$sql = "SELECT u.nome, u.email, u.tel, a.sobrenome, a.matricula, a.cpf, a.data_nasc, a.status, a.habilidades
+$sql = "SELECT u.nome, u.email, u.link_perfil_externo, u.tel, a.sobrenome, a.matricula, a.cpf, a.data_nasc, a.status, a.habilidades
         FROM usuario u
         JOIN aluno a ON u.id_usuario = a.id_aluno
         WHERE u.id_usuario = ?";
