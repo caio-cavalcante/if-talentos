@@ -59,8 +59,9 @@ if (isset($_SESSION['user_id'])) {
                         ?>
                             <li><a href="/admin/index.php">Dashboard</a></li>
                             <li><a href="/admin/gerenciar_vagas.php">Vagas</a></li>
+                            <li><a href="/admin/aprovar_vagas.php">Aprovar</a></li>
                             <li><a href="/admin/gerenciar_usuarios.php">Usuários</a></li>
-
+                            <li><a href="/admin/gerenciar_cursos.php">Cursos</a></li>
                         <?php endif; ?>
 
                         <li><a href="/logout.php" class="btn-logout">Sair</a></li>
