@@ -41,6 +41,7 @@ try {
     error_log("FALHA CRÍTICA NA CONEXÃO COM O BD: " . $e->getMessage());
     // Mostra a mensagem amigável ao usuário
     http_response_code(503);
+    echo($e);
     die("Serviço indisponível temporariamente. Tente novamente mais tarde.");
 }
 ?>
