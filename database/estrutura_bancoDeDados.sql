@@ -30,7 +30,6 @@ CREATE TABLE usuario (
     nome VARCHAR(255) NOT NULL,
     tel VARCHAR(20),
     email VARCHAR(255) UNIQUE NOT NULL,
-    login VARCHAR(100) UNIQUE NOT NULL,
     senha VARCHAR(255) NOT NULL,
     tipo INT NOT NULL CHECK (tipo IN (1, 2, 3)) -- 1: aluno, 2: empresa, 3: admin
 );

@@ -26,11 +26,11 @@ INSERT INTO curso (nome_curso, id_departam) VALUES
 
 -- Inserindo usuários (com os novos campos tel e email)
 INSERT INTO usuario (nome, tel, email, login, senha, tipo) VALUES
-('Ana Silva', '75999111111', 'ana.silva@ifba.edu.br', 'ana.silva', 'senha123', 1),
-('Bruno Costa', '75999222222', 'bruno.costa@ifba.edu.br', 'bruno.costa', 'senha123', 1),
-('TechCorp Soluções', '7532210011', 'contato@techcorp.com', 'techcorp', 'empresa123', 2),
-('InovaTech', '7532210022', 'rh@inovatech.com', 'inovatech', 'empresa123', 2),
-('Admin IFBA', '7536160000', 'admin@ifba.edu.br', 'admin.fsa', '$2y$10$3zRhnLhybeowMocT1K2TDugOVI8fUbo4qVMroiasgpLINC6vQWrrG', 3);
+('Ana Silva', '75999111111', 'ana.silva@ifba.edu.br', 'senha123', 1),
+('Bruno Costa', '75999222222', 'bruno.costa@ifba.edu.br', 'senha123', 1),
+('TechCorp Soluções', '7532210011', 'contato@techcorp.com', 'empresa123', 2),
+('InovaTech', '7532210022', 'rh@inovatech.com', 'empresa123', 2),
+('Admin IFBA', '7536160000', 'admin@ifba.edu.br', '$2y$10$3zRhnLhybeowMocT1K2TDugOVI8fUbo4qVMroiasgpLINC6vQWrrG', 3);
 
 -- Inserindo dados de alunos (agora sem tel e email)
 INSERT INTO aluno (id_aluno, matricula, sobrenome, cpf, data_nasc, status, id_curso, habilidades) VALUES

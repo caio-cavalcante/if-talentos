@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 // 3. BUSCAR DADOS ATUAIS DO ALUNO PARA PREENCHER O FORMULÁRIO
-$sql = "SELECT u.nome, u.email, u.tel, u.login, a.sobrenome, a.matricula, a.cpf, a.data_nasc, a.status, a.habilidades
+$sql = "SELECT u.nome, u.email, u.tel, a.sobrenome, a.matricula, a.cpf, a.data_nasc, a.status, a.habilidades
         FROM usuario u
         JOIN aluno a ON u.id_usuario = a.id_aluno
         WHERE u.id_usuario = ?";
@@ -140,15 +140,9 @@ include '../includes/header.php';
                 <label for="email">Email*</label>
                 <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($aluno['email'] ?? ''); ?>" required>
             </div>
-            <div class="form-group-row">
-                <div class="form-group">
-                    <label for="tel">Telefone</label>
-                    <input type="tel" id="tel" name="tel" value="<?php echo htmlspecialchars($aluno['tel'] ?? ''); ?>">
-                </div>
-                <div class="form-group">
-                    <label for="login">Login (não editável)</label>
-                    <input type="text" id="login" name="login" value="<?php echo htmlspecialchars($aluno['login'] ?? ''); ?>" disabled>
-                </div>
+            <div class="form-group">
+                <label for="tel">Telefone</label>
+                <input type="tel" id="tel" name="tel" value="<?php echo htmlspecialchars($aluno['tel'] ?? ''); ?>">
             </div>
 
             <h3>Dados Acadêmicos e Profissionais</h3>

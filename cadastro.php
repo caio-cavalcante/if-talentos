@@ -29,12 +29,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // --- Dados comuns a ambos os cadastros ---
     $nome = trim($_POST['nome']);
     $email = trim($_POST['email']);
-    $login = trim($_POST['login']);
     $senha = $_POST['senha'];
     $confirmar_senha = $_POST['confirmar_senha'];
 
     // --- Validação dos campos comuns ---
-    if (empty($nome) || empty($email) || empty($login) || empty($senha)) {
+    if (empty($nome) || empty($email) || empty($senha)) {
         $errors['geral'] = "Todos os campos marcados com * são obrigatórios.";
     }
     if ($senha !== $confirmar_senha) {
@@ -46,12 +45,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt_email->execute([$email]);
     if ($stmt_email->fetch()) {
         $errors['email'] = "Este e-mail já está em uso.";
-    }
-
-    $stmt_login = $pdo->prepare("SELECT id_usuario FROM usuario WHERE login = ?");
-    $stmt_login->execute([$login]);
-    if ($stmt_login->fetch()) {
-        $errors['login'] = "Este login já está em uso.";
     }
 
     // --- Validação específica por tipo de cadastro ---
@@ -81,9 +74,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $senha_hash = password_hash($senha, PASSWORD_DEFAULT);
             $tipo_usuario_int = ($tipo_cadastro == 'aluno') ? 1 : 2;
 
-            $sql_usuario = "INSERT INTO usuario (nome, email, login, senha, tipo) VALUES (?, ?, ?, ?, ?)";
+            $sql_usuario = "INSERT INTO usuario (nome, email, senha, tipo) VALUES (?, ?, ?, ?)";
             $stmt_usuario = $pdo->prepare($sql_usuario);
-            $stmt_usuario->execute([$nome, $email, $login, $senha_hash, $tipo_usuario_int]);
+            $stmt_usuario->execute([$nome, $email, $senha_hash, $tipo_usuario_int]);
             $id_usuario_novo = $pdo->lastInsertId();
 
             if ($tipo_cadastro == 'aluno') {
@@ -148,11 +141,6 @@ include 'includes/header.php';
                     <input type="email" name="email" placeholder="E-mail Institucional" required value="<?php echo htmlspecialchars($old_input['email'] ?? ''); ?>">
                     <?php if (isset($errors['email'])): ?><span class="error-message"><?php echo $errors['email']; ?></span><?php endif; ?>
                 </div>
-                
-                <div class="form-group">
-                    <input type="text" name="login" placeholder="Login de Acesso" required value="<?php echo htmlspecialchars($old_input['login'] ?? ''); ?>">
-                    <?php if (isset($errors['login'])): ?><span class="error-message"><?php echo $errors['login']; ?></span><?php endif; ?>
-                </div>
 
                 <div class="form-group">
                     <input type="text" name="cpf" placeholder="CPF" required value="<?php echo htmlspecialchars($old_input['cpf'] ?? ''); ?>">
@@ -188,11 +176,6 @@ include 'includes/header.php';
                 </div>
 
                 <div class="form-group">
-                    <input type="text" name="login" placeholder="Login de Acesso" required value="<?php echo htmlspecialchars($old_input['login'] ?? ''); ?>">
-                    <?php if (isset($errors['login'])): ?><span class="error-message"><?php echo $errors['login']; ?></span><?php endif; ?>
-                </div>
-
-                <div class="form-group">
                     <input type="text" name="cnpj" placeholder="CNPJ" required value="<?php echo htmlspecialchars($old_input['cnpj'] ?? ''); ?>">
                     <?php if (isset($errors['cnpj'])): ?><span class="error-message"><?php echo $errors['cnpj']; ?></span><?php endif; ?>
                 </div>
@@ -222,7 +205,7 @@ include 'includes/header.php';
     document.addEventListener('DOMContentLoaded', function() {
         const selectorContainer = document.getElementById('user-type-selector');
         const allForms = document.querySelectorAll('.register-form');
-        const commonFields = ['nome', 'tel', 'email', 'login', 'senha', 'confirmar_senha'];
+        const commonFields = ['nome', 'tel', 'email', 'senha', 'confirmar_senha'];
 
         function switchForm(targetId) {
             // Esconde o seletor inicial

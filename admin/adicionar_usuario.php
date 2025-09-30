@@ -21,7 +21,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // --- Validação dos dados (adaptado de cadastro.php) ---
     $nome = trim($_POST['nome']);
     $email = trim($_POST['email']);
-    $login = trim($_POST['login']);
     $senha = $_POST['senha'];
     $confirmar_senha = $_POST['confirmar_senha'];
 
@@ -35,12 +34,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt_email->execute([$email]);
     if ($stmt_email->fetch()) {
         $errors['email'] = "Este e-mail já está em uso.";
-    }
-
-    $stmt_login = $pdo->prepare("SELECT id_usuario FROM usuario WHERE login = ?");
-    $stmt_login->execute([$login]);
-    if ($stmt_login->fetch()) {
-        $errors['login'] = "Este login já está em uso.";
     }
     
     if ($tipo_cadastro == 'aluno') {
@@ -65,9 +58,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if($tipo_cadastro == 'empresa') $tipo_usuario_int = 2;
             if($tipo_cadastro == 'admin') $tipo_usuario_int = 3;
 
-            $sql_usuario = "INSERT INTO usuario (nome, tel, email, login, senha, tipo) VALUES (?, ?, ?, ?, ?, ?)";
+            $sql_usuario = "INSERT INTO usuario (nome, tel, email, senha, tipo) VALUES (?, ?, ?, ?, ?)";
             $stmt_usuario = $pdo->prepare($sql_usuario);
-            $stmt_usuario->execute([$nome, $tel, $email, $login, $senha_hash, $tipo_usuario_int]);
+            $stmt_usuario->execute([$nome, $tel, $email, $senha_hash, $tipo_usuario_int]);
             $id_usuario_novo = $pdo->lastInsertId();
 
             if ($tipo_cadastro == 'aluno') {
@@ -128,7 +121,6 @@ include '../includes/header.php';
                 <div class="form-group"><input type="text" name="sobrenome" placeholder="Sobrenome" required value="<?php echo htmlspecialchars($old_input['sobrenome'] ?? ''); ?>"></div>
                 <div class="form-group"><input type="email" name="email" placeholder="E-mail" required value="<?php echo htmlspecialchars($old_input['email'] ?? ''); ?>"></div>
                 <div class="form-group"><input type="tel" name="tel" placeholder="Telefone" value="<?php echo htmlspecialchars($old_input['tel'] ?? ''); ?>"></div>
-                <div class="form-group"><input type="text" name="login" placeholder="Login" required value="<?php echo htmlspecialchars($old_input['login'] ?? ''); ?>"></div>
                 <div class="form-group"><input type="password" name="senha" placeholder="Senha" required></div>
                 <div class="form-group"><input type="password" name="confirmar_senha" placeholder="Confirmar Senha" required></div>
                 <div class="form-group"><input type="text" name="matricula" placeholder="Matrícula" required value="<?php echo htmlspecialchars($old_input['matricula'] ?? ''); ?>"></div>
@@ -151,7 +143,6 @@ include '../includes/header.php';
                 <div class="form-group"><input type="text" name="nome" placeholder="Nome do Responsável" required value="<?php echo htmlspecialchars($old_input['nome'] ?? ''); ?>"></div>
                 <div class="form-group"><input type="email" name="email" placeholder="E-mail" required value="<?php echo htmlspecialchars($old_input['email'] ?? ''); ?>"></div>
                 <div class="form-group"><input type="tel" name="tel" placeholder="Telefone" value="<?php echo htmlspecialchars($old_input['tel'] ?? ''); ?>"></div>
-                <div class="form-group"><input type="text" name="login" placeholder="Login" required value="<?php echo htmlspecialchars($old_input['login'] ?? ''); ?>"></div>
                 <div class="form-group"><input type="password" name="senha" placeholder="Senha" required></div>
                 <div class="form-group"><input type="password" name="confirmar_senha" placeholder="Confirmar Senha" required></div>
 
@@ -169,7 +160,6 @@ include '../includes/header.php';
                 <div class="form-group"><input type="text" name="nome" placeholder="Nome Completo" required value="<?php echo htmlspecialchars($old_input['nome'] ?? ''); ?>"></div>
                 <div class="form-group"><input type="email" name="email" placeholder="E-mail" required value="<?php echo htmlspecialchars($old_input['email'] ?? ''); ?>"></div>
                 <div class="form-group"><input type="tel" name="tel" placeholder="Telefone" value="<?php echo htmlspecialchars($old_input['tel'] ?? ''); ?>"></div>
-                <div class="form-group"><input type="text" name="login" placeholder="Login" required value="<?php echo htmlspecialchars($old_input['login'] ?? ''); ?>"></div>
                 <div class="form-group"><input type="password" name="senha" placeholder="Senha" required></div>
                 <div class="form-group"><input type="password" name="confirmar_senha" placeholder="Confirmar Senha" required></div>
 
