@@ -38,7 +38,7 @@ CREATE TABLE usuario (
 -- Tabela de Alunos (Especialização)
 CREATE TABLE aluno (
     id_aluno INT PRIMARY KEY REFERENCES usuario(id_usuario) ON DELETE CASCADE,
-    matricula VARCHAR(20) UNIQUE NOT NULL,
+    matricula VARCHAR(20) UNIQUE,
     sobrenome VARCHAR(100) NOT NULL,
     cpf VARCHAR(14) UNIQUE NOT NULL,
     data_nasc DATE,
