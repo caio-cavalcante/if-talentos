@@ -24,7 +24,7 @@ if (isset($_SESSION['user_id']) && $_SESSION['user_tipo'] == 1) {
 try {
     // Seleciona todas as colunas da tabela vaga onde o status é 'Aprovada'
     // Ordena pelas mais recentes primeiro
-    $stmt_vagas = $pdo->prepare("SELECT * FROM vaga WHERE status = 'Aprovada' ORDER BY data_publicacao DESC");
+    $stmt_vagas = $pdo->prepare("SELECT * FROM vaga WHERE status = 'Aprovada' or status = 'Aberta' ORDER BY data_publicacao DESC");
     $stmt_vagas->execute();
     $vagas = $stmt_vagas->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
