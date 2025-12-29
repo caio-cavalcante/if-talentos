@@ -69,7 +69,7 @@ Antes de começar, garanta que possui os seguintes pré-requisitos instalados na
 
 ### 1. Clone o repositório:
 ```bash
-git clone https://github.com/seu-usuario/if-talentos.git
+git clone https://github.com/caio-cavalcante/if-talentos.git
 ```
 
 ### 2. Configure o Banco de Dados:
