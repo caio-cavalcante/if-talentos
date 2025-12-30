@@ -1,8 +1,10 @@
 <?php
 session_start();
 
-$feedback_message = '';
-$feedback_type = ''; // 'success' ou 'error'
+$feedback_message = $_SESSION['feedback_message'] ?? '';
+$feedback_type = $_SESSION['feedback_type'] ?? '';
+
+unset($_SESSION['feedback_message'], $_SESSION['feedback_type']);
 
 $apiUrl = "https://notification-api-ztqe.onrender.com/api/contact";
 
@@ -42,34 +44,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 CURLOPT_TIMEOUT => 10,
                 CURLOPT_CONNECTTIMEOUT => 5,
-
-                CURLOPT_SSL_VERIFYPEER => false,
-                CURLOPT_SSL_VERIFYHOST => false,
             ]);
-
 
             // 4. Executar
             $response = curl_exec($ch);
 
             if ($response === false) {
-                die("Erro cURL: " . curl_error($ch));
+                error_log("Erro cURL: " . curl_error($ch));
+                $feedback_message = "Não foi possível enviar sua mensagem no momento. Tente novamente mais tarde.";
+                $feedback_type = 'error';
             }
 
+            $curlError = curl_error($ch);
             $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
             curl_close($ch);
 
             // 5. Verificar o resultado
             if ($httpCode === 200) {
                 // Sucesso! A API retornou 200 OK
-                $feedback_message = "Sua mensagem foi enviada com sucesso! Entraremos em contato em breve.";
-                $feedback_type = 'success';
+                $_SESSION['feedback_message'] = "Sua mensagem foi enviada com sucesso!";
+                $_SESSION['feedback_type'] = 'success';
+                header("Location: contato.php");
+                exit;
             } else {
                 // Erro na API (pode ser validação do Zod ou erro de servidor)
                 // Logar para debug (não mostre o erro técnico para o usuário final)
                 error_log("Erro na API de Notificação. Código: $httpCode. Erro cURL: $curlError. Resposta: $response");
 
-                // $feedback_message = "Ocorreu um erro ao processar sua mensagem. Tente novamente mais tarde.";
-                $feedback_message = "Erro na API de Notificação. Código: $httpCode. Erro cURL: $curlError. Resposta: $response";
+                $feedback_message = "Ocorreu um erro ao processar sua mensagem. Tente novamente mais tarde.";
                 $feedback_type = 'error';
             }
         }
