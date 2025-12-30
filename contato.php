@@ -22,34 +22,40 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $feedback_type = 'error';
         } else {
             // 1. Preparar os dados para o formato que o Zod espera (JSON)
-            $dados = [
+            $data = [
                 "name" => $nome,
                 "email" => $email_remetente,
                 "message" => $mensagem
             ];
 
-            $payload = json_encode($dados);
-
             // 2. Inicializar o cURL
             $ch = curl_init($apiUrl);
 
             // 3. Configurar as opções da requisição
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Retornar a resposta em vez de imprimir
-            curl_setopt($ch, CURLOPT_POST, true);           // Método POST
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $payload); // O JSON
-            curl_setopt($ch, CURLOPT_HTTPHEADER, [
-                'Content-Type: application/json',           // Avisar que é JSON
-                'Content-Length: ' . strlen($payload)
+            curl_setopt_array($ch, [
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_POST => true,
+                CURLOPT_HTTPHEADER => [
+                    'Content-Type: application/json'
+                ],
+                CURLOPT_POSTFIELDS => json_encode($data),
+
+                CURLOPT_TIMEOUT => 10,
+                CURLOPT_CONNECTTIMEOUT => 5,
+
+                CURLOPT_SSL_VERIFYPEER => false,
+                CURLOPT_SSL_VERIFYHOST => false,
             ]);
 
-            // Timeout de 20s (importante para o Render Free Tier)
-            curl_setopt($ch, CURLOPT_TIMEOUT, 20);
 
             // 4. Executar
             $response = curl_exec($ch);
+
+            if ($response === false) {
+                die("Erro cURL: " . curl_error($ch));
+            }
+
             $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            $curlError = curl_error($ch);
-            
             curl_close($ch);
 
             // 5. Verificar o resultado
@@ -61,8 +67,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 // Erro na API (pode ser validação do Zod ou erro de servidor)
                 // Logar para debug (não mostre o erro técnico para o usuário final)
                 error_log("Erro na API de Notificação. Código: $httpCode. Erro cURL: $curlError. Resposta: $response");
-                
-                $feedback_message = "Ocorreu um erro ao processar sua mensagem. Tente novamente mais tarde.";
+
+                // $feedback_message = "Ocorreu um erro ao processar sua mensagem. Tente novamente mais tarde.";
+                $feedback_message = "Erro na API de Notificação. Código: $httpCode. Erro cURL: $curlError. Resposta: $response";
                 $feedback_type = 'error';
             }
         }
@@ -89,7 +96,7 @@ include 'includes/header.php';
                 <?php echo htmlspecialchars($feedback_message); ?>
             </div>
         <?php endif; ?>
-        
+
         <div class="contact-form-container">
             <form action="contato.php" method="POST" class="crud-form">
                 <div class="form-group">
