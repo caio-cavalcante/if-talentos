@@ -4,6 +4,8 @@ session_start();
 $feedback_message = '';
 $feedback_type = ''; // 'success' ou 'error'
 
+$apiUrl = "https://notification-api-ztqe.onrender.com/api/contact";
+
 // Lógica de envio do formulário
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     try {
@@ -19,27 +21,48 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $feedback_message = "Por favor, insira um endereço de e-mail válido.";
             $feedback_type = 'error';
         } else {
-            // --- Configuração do E-mail ---
-            $email_destinatario = "20231BSIFSA0005@ifba.edu.br";
-            $assunto = "Nova Mensagem do Formulário de Contato - IF Talentos";
+            // 1. Preparar os dados para o formato que o Zod espera (JSON)
+            $dados = [
+                "name" => $nome,
+                "email" => $email_remetente,
+                "message" => $mensagem
+            ];
 
-            // Monta o corpo do e-mail
-            $corpo_email = "Você recebeu uma nova mensagem através do site IF Talentos.\n\n";
-            $corpo_email .= "Nome: " . htmlspecialchars($nome) . "\n";
-            $corpo_email .= "E-mail: " . htmlspecialchars($email_remetente) . "\n";
-            $corpo_email .= "Mensagem:\n" . htmlspecialchars($mensagem) . "\n";
+            $payload = json_encode($dados);
 
-            // Monta os cabeçalhos do e-mail (essencial para evitar spam)
-            $headers = "From: " . htmlspecialchars($nome) . " <" . htmlspecialchars($email_remetente) . ">\r\n";
-            $headers .= "Reply-To: " . htmlspecialchars($email_remetente) . "\r\n";
-            $headers .= "X-Mailer: PHP/" . phpversion();
+            // 2. Inicializar o cURL
+            $ch = curl_init($apiUrl);
 
-            // Tenta enviar o e-mail
-            if (mail($email_destinatario, $assunto, $corpo_email, $headers)) {
+            // 3. Configurar as opções da requisição
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Retornar a resposta em vez de imprimir
+            curl_setopt($ch, CURLOPT_POST, true);           // Método POST
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $payload); // O JSON
+            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                'Content-Type: application/json',           // Avisar que é JSON
+                'Content-Length: ' . strlen($payload)
+            ]);
+
+            // Timeout de 20s (importante para o Render Free Tier)
+            curl_setopt($ch, CURLOPT_TIMEOUT, 20);
+
+            // 4. Executar
+            $response = curl_exec($ch);
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            $curlError = curl_error($ch);
+            
+            curl_close($ch);
+
+            // 5. Verificar o resultado
+            if ($httpCode === 200) {
+                // Sucesso! A API retornou 200 OK
                 $feedback_message = "Sua mensagem foi enviada com sucesso! Entraremos em contato em breve.";
                 $feedback_type = 'success';
             } else {
-                $feedback_message = "Ocorreu um erro ao tentar enviar sua mensagem. Por favor, tente novamente mais tarde ou contate-nos por outro meio.";
+                // Erro na API (pode ser validação do Zod ou erro de servidor)
+                // Logar para debug (não mostre o erro técnico para o usuário final)
+                error_log("Erro na API de Notificação. Código: $httpCode. Erro cURL: $curlError. Resposta: $response");
+                
+                $feedback_message = "Ocorreu um erro ao processar sua mensagem. Tente novamente mais tarde.";
                 $feedback_type = 'error';
             }
         }
